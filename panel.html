@@ -1,0 +1,856 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AgendaVIP — Panel</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#070a12;
+      --bg2:#0b1020;
+      --card: rgba(255,255,255,.05);
+      --card2: rgba(255,255,255,.03);
+      --line: rgba(255,255,255,.10);
+
+      --text:#eef1fb;
+      --muted:#a9b1d6;
+
+      --gold:#d7b36a;
+      --gold2:#f3e2b6;
+      --ok:#34d399;
+      --warn:#fbbf24;
+
+      --shadow: 0 22px 70px rgba(0,0,0,.55);
+      --radius: 18px;
+      --radius2: 26px;
+
+      --sans: "Inter", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial;
+      --serif: "Fraunces", ui-serif, Georgia, "Times New Roman", Times, serif;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--text);
+      background: var(--bg);
+      overflow-x:hidden;
+      letter-spacing:-0.1px;
+    }
+
+    /* Subtle premium background */
+    .bg{
+      position:fixed; inset:0; z-index:-3;
+      background:
+        radial-gradient(900px 520px at 18% 10%, rgba(124,92,255,.12), transparent 60%),
+        radial-gradient(900px 520px at 82% 14%, rgba(27,211,255,.08), transparent 62%),
+        radial-gradient(900px 520px at 50% 110%, rgba(215,179,106,.10), transparent 60%),
+        linear-gradient(rgba(7,10,18,0.90), rgba(7,10,18,0.98)),
+        url("barber-bg.png");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      filter: saturate(.92) contrast(.98);
+      transform: translateZ(0);
+    }
+    .grain{
+      position:fixed; inset:-40px; z-index:-2;
+      pointer-events:none;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+      opacity:.05;
+      mix-blend-mode: overlay;
+      filter: contrast(120%);
+    }
+
+    .app{
+      min-height:100vh;
+      display:grid;
+      grid-template-columns: 280px 1fr;
+    }
+
+    /* Sidebar (desktop) */
+    .sidebar{
+      position:sticky;
+      top:0;
+      height:100vh;
+      padding:18px 16px;
+      border-right:1px solid rgba(255,255,255,.08);
+      background: linear-gradient(180deg, rgba(7,10,18,.90), rgba(7,10,18,.70));
+      backdrop-filter: blur(18px);
+    }
+
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      padding:10px 10px 16px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      margin-bottom:14px;
+    }
+    .logo{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.03) !important;
+      border: 1px solid rgba(215, 179, 106, 0.3) !important;
+      backdrop-filter: blur(5px);
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(215, 179, 106, 0.1);
+    }
+    .logo svg{ width: 100%; height: 100%; padding: 6px; display: block; }
+    .logo:after{ display: none; }
+    .brand b{display:block; font-size:14px; line-height:1.1}
+    .brand span{display:block; font-size:12px; color:var(--muted); margin-top:2px}
+
+    .nav{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      margin-top:12px;
+    }
+    .nav a{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:10px 12px;
+      border-radius: 14px;
+      color: rgba(233,236,247,.82);
+      border:1px solid transparent;
+      background: transparent;
+      transition:.2s ease;
+      font-size:14px;
+    }
+    .nav a:hover{
+      background: rgba(255,255,255,.05);
+      border-color: rgba(255,255,255,.10);
+    }
+    .nav a.active{
+      background: rgba(215,179,106,.10);
+      border-color: rgba(215,179,106,.22);
+      color: #fff4d2;
+    }
+    .pill{
+      font-size:12px;
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.03);
+      color: rgba(238,241,251,.78);
+      white-space:nowrap;
+    }
+    .pill.gold{
+      border-color: rgba(215,179,106,.26);
+      background: rgba(215,179,106,.10);
+      color:#fff4d2;
+    }
+
+    .sidebar-card{
+      margin-top:14px;
+      border:1px solid rgba(255,255,255,.08);
+      background: linear-gradient(165deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border-radius: var(--radius2);
+      padding:14px;
+    }
+    .sidebar-card h4{margin:0 0 10px; font-size:13px; color:rgba(238,241,251,.92)}
+    .mini{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:10px 10px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.12);
+      margin-top:8px;
+    }
+    .mini small{color:var(--muted)}
+    .mini b{font-size:14px}
+
+    /* Main */
+    .main{
+      padding:18px 20px 28px;
+    }
+
+    /* Topbar */
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px;
+      padding:12px 14px;
+      border:1px solid rgba(255,255,255,.08);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border-radius: var(--radius2);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+    .topbar .title h1{
+      margin:0;
+      font-family:var(--serif);
+      font-size: 20px;
+      letter-spacing:-.6px;
+    }
+    .topbar .title p{
+      margin:4px 0 0;
+      font-size:12px;
+      color: var(--muted);
+    }
+    .actions{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      font-weight:650;
+      font-size:13px;
+      cursor:default; /* no funcionalidad */
+      user-select:none;
+      white-space:nowrap;
+    }
+    .btn.primary{
+      border: 1px solid rgba(215,179,106,.40);
+      background: linear-gradient(135deg, rgba(215,179,106,.95), rgba(243,226,182,.70));
+      color:#0a0d14;
+      box-shadow: 0 18px 46px rgba(215,179,106,.14);
+      font-weight:800;
+    }
+    .avatar{
+      width:34px;height:34px;border-radius: 14px;
+      border:1px solid rgba(255,255,255,.12);
+      background:
+        radial-gradient(16px 16px at 30% 30%, rgba(255,255,255,.14), transparent 60%),
+        rgba(255,255,255,.04);
+      display:flex; align-items:center; justify-content:center;
+      color: rgba(238,241,251,.85);
+      font-weight:800;
+      font-size:12px;
+    }
+
+    /* Layout grid */
+    .grid{
+      margin-top:16px;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:16px;
+      align-items:start;
+    }
+
+    .stack{
+      display:grid;
+      gap:16px;
+    }
+
+    .card{
+      border:1px solid rgba(255,255,255,.08);
+      background: linear-gradient(165deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border-radius: var(--radius2);
+      padding:16px;
+      box-shadow: 0 14px 50px rgba(0,0,0,.28);
+      position:relative;
+      overflow:hidden;
+    }
+    .card:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(540px 220px at 20% 0%, rgba(215,179,106,.10), transparent 58%),
+        radial-gradient(520px 220px at 90% 30%, rgba(124,92,255,.08), transparent 58%);
+      pointer-events:none;
+    }
+
+    /* Variantes de sección para diferenciar visualmente los bloques */
+    .card-agenda{
+      border-top: 2px solid rgba(52,211,153,.55);
+    }
+    .card-agenda:before{
+      background:
+        radial-gradient(540px 220px at 10% 0%, rgba(52,211,153,.18), transparent 58%),
+        radial-gradient(520px 220px at 90% 30%, rgba(124,92,255,.08), transparent 58%);
+    }
+
+    .card-semana{
+      border-top: 2px solid rgba(124,92,255,.55);
+    }
+    .card-semana:before{
+      background:
+        radial-gradient(540px 220px at 10% 0%, rgba(124,92,255,.18), transparent 58%),
+        radial-gradient(520px 220px at 90% 30%, rgba(215,179,106,.10), transparent 58%);
+    }
+
+    .card-vip{
+      border-top: 2px solid rgba(215,179,106,.70);
+    }
+    .card-vip:before{
+      background:
+        radial-gradient(540px 220px at 10% 0%, rgba(215,179,106,.22), transparent 58%),
+        radial-gradient(520px 220px at 90% 30%, rgba(124,92,255,.10), transparent 58%);
+    }
+
+    .card-servicios{
+      border-top: 2px solid rgba(27,211,255,.55);
+    }
+    .card-servicios:before{
+      background:
+        radial-gradient(540px 220px at 10% 0%, rgba(27,211,255,.18), transparent 58%),
+        radial-gradient(520px 220px at 90% 30%, rgba(124,92,255,.08), transparent 58%);
+    }
+
+    .card-invitaciones{
+      border-top: 2px solid rgba(251,191,36,.70);
+    }
+    .card-invitaciones:before{
+      background:
+        radial-gradient(540px 220px at 10% 0%, rgba(251,191,36,.22), transparent 58%),
+        radial-gradient(520px 220px at 90% 30%, rgba(124,92,255,.08), transparent 58%);
+    }
+    .card > *{position:relative}
+    .card h2{
+      margin:0 0 8px;
+      font-size:14px;
+      letter-spacing:.2px;
+      color: rgba(238,241,251,.92);
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+    }
+    .sub{
+      margin:0 0 12px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height:1.45;
+    }
+
+    /* Table-ish list */
+    .list{
+      display:grid;
+      gap:10px;
+    }
+    .item{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px;
+      padding:12px 12px;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.14);
+    }
+    .item.item-hueco{
+      border-color: rgba(52,211,153,.35);
+      background: rgba(52,211,153,.08);
+    }
+    .item.item-hueco .time{
+      border-color: rgba(52,211,153,.25);
+      background: rgba(52,211,153,.06);
+    }
+    .item.item-hueco .tag{
+      border-color: rgba(52,211,153,.35);
+      background: rgba(52,211,153,.12);
+      color: #b8f5e0;
+    }
+    .left{
+      display:flex; gap:12px; align-items:flex-start;
+      min-width:0;
+    }
+    .time{
+      width:66px;
+      flex:0 0 66px;
+      padding:8px 10px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      text-align:center;
+    }
+    .time b{display:block; font-size:13px}
+    .time small{display:block; color:var(--muted); font-size:11px; margin-top:2px}
+    .meta{
+      min-width:0;
+    }
+    .meta b{
+      display:block;
+      font-size:14px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .meta small{
+      display:block;
+      color: var(--muted);
+      margin-top:3px;
+      font-size:12px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .right{
+      display:flex; gap:8px; align-items:center; flex-wrap:wrap; justify-content:flex-end;
+    }
+    .tag{
+      font-size:12px;
+      padding:5px 9px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.03);
+      color: rgba(238,241,251,.82);
+      white-space:nowrap;
+    }
+    .tag.gold{border-color: rgba(215,179,106,.28); background: rgba(215,179,106,.10); color:#fff4d2}
+    .tag.ok{border-color: rgba(52,211,153,.26); background: rgba(52,211,153,.10); color:#c8ffe6}
+    .tag.warn{border-color: rgba(251,191,36,.25); background: rgba(251,191,36,.10); color:#fff3c4}
+
+    /* KPI row */
+    .kpis{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:10px;
+      margin-top:12px;
+    }
+    .kpi{
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      border-radius: 18px;
+      padding:12px 12px;
+    }
+    .kpi b{display:block; font-size:16px}
+    .kpi small{display:block; color: var(--muted); margin-top:2px}
+
+    /* Calendar mock */
+    .calendar{
+      display:grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap:8px;
+      margin-top:10px;
+    }
+    .day{
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.02);
+      border-radius: 16px;
+      padding:10px 10px;
+      min-height:70px;
+    }
+    .day b{display:block; font-size:12px; color: rgba(238,241,251,.86)}
+    .dot{
+      width:8px; height:8px; border-radius:99px;
+      display:inline-block;
+      margin-top:8px;
+      background: rgba(255,255,255,.25);
+    }
+    .dot.gold{background: rgba(215,179,106,.85); box-shadow:0 0 0 6px rgba(215,179,106,.10)}
+    .dot.ok{background: rgba(52,211,153,.85); box-shadow:0 0 0 6px rgba(52,211,153,.10)}
+
+    /* Mobile nav (bottom) */
+    .mobile-bar{
+      display:none;
+      position:sticky;
+      bottom:0;
+      padding:10px 10px;
+      border-top:1px solid rgba(255,255,255,.08);
+      background: linear-gradient(to top, rgba(7,10,18,.96), rgba(7,10,18,.80));
+      backdrop-filter: blur(16px);
+    }
+    .tabs-mobile{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:8px;
+    }
+    .tabm{
+      padding:10px 10px;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: rgba(233,236,247,.86);
+      text-align:center;
+      font-size:12px;
+      font-weight:700;
+      cursor:default;
+      user-select:none;
+    }
+    .tabm.active{
+      border-color: rgba(215,179,106,.22);
+      background: rgba(215,179,106,.10);
+      color:#fff4d2;
+    }
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .app{grid-template-columns: 1fr;}
+      .sidebar{display:none;}
+      .grid{grid-template-columns:1fr;}
+      .kpis{grid-template-columns:1fr;}
+      .mobile-bar{display:block;}
+      .main{padding:14px 14px 20px;}
+      .topbar{border-radius: 22px;}
+    }
+
+    /* Small mobile tweaks */
+    @media (max-width: 420px){
+      .time{width:60px; flex-basis:60px}
+      .btn{padding:10px 10px}
+      .actions{gap:8px}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <div class="app">
+
+    <!-- SIDEBAR (Desktop) -->
+    <aside class="sidebar" aria-label="Navegación lateral">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 15L85 35V65L50 85L15 65V35L50 15Z" stroke="url(#goldGradientPanel)" stroke-width="6" stroke-linejoin="round"/>
+            <path d="M35 65L50 30L65 65M42 52H58" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+            <defs>
+              <linearGradient id="goldGradientPanel" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#d7b36a" />
+                <stop offset="100%" stop-color="#f3e2b6" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div>
+          <b>AgendaVIP</b>
+          <span>Panel del profesional</span>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a class="active" href="#" aria-current="page">
+          <span>Dashboard</span>
+          <span class="pill gold">Hoy</span>
+        </a>
+        <a href="#">
+          <span>Agenda</span>
+          <span class="pill">Semana</span>
+        </a>
+        <a href="#">
+          <span>Clientes</span>
+          <span class="pill">128</span>
+        </a>
+        <a href="#">
+          <span>Servicios</span>
+          <span class="pill">6</span>
+        </a>
+        <a href="#">
+          <span>Invitaciones</span>
+          <span class="pill gold">3</span>
+        </a>
+        <a href="#">
+          <span>Ajustes</span>
+          <span class="pill">Pro</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-card">
+        <h4>Resumen de hoy</h4>
+        <div class="mini">
+          <div>
+            <b>7 citas</b>
+            <small>3 confirmadas · 1 pendiente</small>
+          </div>
+          <span class="pill ok">+2</span>
+        </div>
+        <div class="mini">
+          <div>
+            <b>Ingresos</b>
+            <small>Estimado</small>
+          </div>
+          <span class="pill gold">€ 210</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main" aria-label="Contenido principal">
+      <header class="topbar">
+        <div class="title">
+          <h1>Dashboard</h1>
+          <p>Barbería Central · Acceso por invitación · Madrid</p>
+        </div>
+        <div class="actions">
+          <div class="btn">Invitar cliente</div>
+          <div class="btn primary">Crear hueco</div>
+          <div class="avatar" title="Perfil">JM</div>
+        </div>
+      </header>
+
+      <section class="grid" aria-label="Panel">
+        <!-- LEFT STACK -->
+        <div class="stack">
+          <article class="card card-agenda">
+            <h2>
+              <span>Agenda de hoy</span>
+              <span class="pill gold">Mar 12</span>
+            </h2>
+            <!-- Nota: bloque de agenda con datos de ejemplo para diseño -->
+            <p class="sub">Citas ordenadas por horario para hoy.</p>
+
+            <div class="list">
+              <div class="item">
+                <div class="left">
+                  <div class="time"><b>10:30</b><small>30m</small></div>
+                  <div class="meta">
+                    <b>Juan Pérez</b>
+                    <small>Corte clásico · Nota: degradado bajo</small>
+                  </div>
+                </div>
+                <div class="right">
+                  <span class="tag gold">VIP</span>
+                  <span class="tag ok">Confirmada</span>
+                </div>
+              </div>
+
+              <div class="item">
+                <div class="left">
+                  <div class="time"><b>11:15</b><small>45m</small></div>
+                  <div class="meta">
+                    <b>Álvaro R.</b>
+                    <small>Pack (corte + barba) · Prefiere tijera</small>
+                  </div>
+                </div>
+                <div class="right">
+                  <span class="tag">Habitual</span>
+                  <span class="tag warn">Pendiente</span>
+                </div>
+              </div>
+
+              <div class="item item-hueco">
+                <div class="left">
+                  <div class="time"><b>13:00</b><small>30m</small></div>
+                  <div class="meta">
+                    <b>Hueco disponible</b>
+                    <small>Ideal para corte rápido</small>
+                  </div>
+                </div>
+                <div class="right">
+                  <span class="tag">Libre</span>
+                </div>
+              </div>
+
+              <div class="item">
+                <div class="left">
+                  <div class="time"><b>18:30</b><small>45m</small></div>
+                  <div class="meta">
+                    <b>María López</b>
+                    <small>Pack premium · Nota: producto sin perfume</small>
+                  </div>
+                </div>
+                <div class="right">
+                  <span class="tag gold">VIP</span>
+                  <span class="tag ok">Confirmada</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="kpis" aria-label="KPIs">
+              <div class="kpi">
+                <b>7</b>
+                <small>Citas hoy</small>
+              </div>
+              <div class="kpi">
+                <b>86%</b>
+                <small>Confirmación</small>
+              </div>
+              <div class="kpi">
+                <b>€210</b>
+                <small>Estimado</small>
+              </div>
+            </div>
+          </article>
+
+          <article class="card card-semana">
+            <h2>
+              <span>Semana</span>
+              <span class="pill">Vista calendario</span>
+            </h2>
+            <!-- Nota: calendario semanal de ejemplo; los puntos representan carga de citas -->
+            <p class="sub">Vista rápida semanal. Los puntos indican carga de citas.</p>
+
+            <div class="calendar" aria-label="Calendario semanal">
+              <div class="day"><b>Lun</b><span class="dot"></span></div>
+              <div class="day"><b>Mar</b><span class="dot gold"></span></div>
+              <div class="day"><b>Mié</b><span class="dot ok"></span></div>
+              <div class="day"><b>Jue</b><span class="dot gold"></span></div>
+              <div class="day"><b>Vie</b><span class="dot gold"></span></div>
+              <div class="day"><b>Sáb</b><span class="dot ok"></span></div>
+              <div class="day"><b>Dom</b><span class="dot"></span></div>
+            </div>
+          </article>
+        </div>
+
+        <!-- RIGHT STACK -->
+        <div class="stack">
+          <article class="card card-vip">
+            <h2>
+              <span>Clientes VIP</span>
+              <span class="pill gold">Top</span>
+            </h2>
+            <!-- Nota: listado de clientes VIP de ejemplo para maquetación -->
+            <p class="sub">Lista rápida de clientes prioritarios.</p>
+
+            <div class="list">
+              <div class="item">
+                <div class="left">
+                  <div class="time"><b>22</b><small>visitas</small></div>
+                  <div class="meta">
+                    <b>Juan Pérez</b>
+                    <small>Última: hace 2 semanas · Corte clásico</small>
+                  </div>
+                </div>
+                <div class="right">
+                  <span class="tag gold">VIP</span>
+                </div>
+              </div>
+
+              <div class="item">
+                <div class="left">
+                  <div class="time"><b>14</b><small>visitas</small></div>
+                  <div class="meta">
+                    <b>María López</b>
+                    <small>Última: 10 días · Pack premium</small>
+                  </div>
+                </div>
+                <div class="right">
+                  <span class="tag gold">VIP</span>
+                </div>
+              </div>
+
+              <div class="item">
+                <div class="left">
+                  <div class="time"><b>9</b><small>visitas</small></div>
+                  <div class="meta">
+                    <b>Carlos G.</b>
+                    <small>Última: 1 mes · Barba</small>
+                  </div>
+                </div>
+                <div class="right">
+                  <span class="tag">Habitual</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card card-servicios">
+            <h2>
+              <span>Servicios</span>
+              <span class="pill">Duración</span>
+            </h2>
+            <!-- Nota: catálogo de servicios y tiempos a modo de ejemplo -->
+            <p class="sub">Catálogo de servicios con tiempos. Ayuda a que la agenda encaje.</p>
+
+            <div class="list">
+              <div class="item">
+                <div class="left">
+                  <div class="time"><b>30m</b><small>base</small></div>
+                  <div class="meta">
+                    <b>Corte</b>
+                    <small>Incluye acabado</small>
+                  </div>
+                </div>
+                <div class="right">
+                  <span class="tag">€ 18</span>
+                </div>
+              </div>
+
+              <div class="item">
+                <div class="left">
+                  <div class="time"><b>20m</b><small>rápido</small></div>
+                  <div class="meta">
+                    <b>Barba</b>
+                    <small>Perfilado + toalla</small>
+                  </div>
+                </div>
+                <div class="right">
+                  <span class="tag">€ 12</span>
+                </div>
+              </div>
+
+              <div class="item">
+                <div class="left">
+                  <div class="time"><b>45m</b><small>pack</small></div>
+                  <div class="meta">
+                    <b>Corte + Barba</b>
+                    <small>Servicio premium</small>
+                  </div>
+                </div>
+                <div class="right">
+                  <span class="tag gold">€ 28</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card card-invitaciones">
+            <h2>
+              <span>Invitaciones pendientes</span>
+              <span class="pill gold">3</span>
+            </h2>
+            <!-- Nota: bloque de invitaciones por enlace, solo UI de ejemplo (sin lógica) -->
+            <p class="sub">Invitaciones activas por enlace.</p>
+
+            <div class="list">
+              <div class="item">
+                <div class="left">
+                  <div class="time"><b>Hoy</b><small>12:10</small></div>
+                  <div class="meta">
+                    <b>Link VIP · “Juan P.”</b>
+                    <small>Expira en 48h · 1 uso</small>
+                  </div>
+                </div>
+                <div class="right">
+                  <span class="tag gold">VIP</span>
+                  <span class="tag">Copiar</span>
+                </div>
+              </div>
+
+              <div class="item">
+                <div class="left">
+                  <div class="time"><b>Ayer</b><small>19:40</small></div>
+                  <div class="meta">
+                    <b>Link · “Luis G.”</b>
+                    <small>Expira en 48h · 1 uso</small>
+                  </div>
+                </div>
+                <div class="right">
+                  <span class="tag">Habitual</span>
+                  <span class="tag">Copiar</span>
+                </div>
+              </div>
+
+              <div class="item">
+                <div class="left">
+                  <div class="time"><b>Ayer</b><small>10:05</small></div>
+                  <div class="meta">
+                    <b>Link · “Cliente nuevo”</b>
+                    <small>Expira en 48h · 1 uso</small>
+                  </div>
+                </div>
+                <div class="right">
+                  <span class="tag warn">Pendiente</span>
+                  <span class="tag">Copiar</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- Mobile bottom nav (UI only) -->
+      <nav class="mobile-bar" aria-label="Navegación móvil">
+        <div class="tabs-mobile">
+          <div class="tabm active">Hoy</div>
+          <div class="tabm">Agenda</div>
+          <div class="tabm">Clientes</div>
+          <div class="tabm">Ajustes</div>
+        </div>
+      </nav>
+
+    </main>
+  </div>
+</body>
+</html>
