@@ -723,6 +723,9 @@
       background: rgba(0,0,0,.25);
     }
     .hint{font-size:12px;color:var(--muted)}
+    .lead-msg{font-size:13px;margin-left:8px}
+    .lead-msg.ok{color:var(--ok)}
+    .lead-msg.err{color:#f87171}
     /* Botón flotante WhatsApp */
     .whatsapp-float{
       position: fixed;
@@ -1430,6 +1433,11 @@
           </div>
 
           <div>
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="tu@email.com" required />
+          </div>
+
+          <div>
             <label for="city">Ciudad</label>
             <input id="city" name="city" placeholder="Madrid" required />
           </div>
@@ -1455,7 +1463,8 @@
           </div>
 
           <div class="full" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-            <button class="btn primary" type="submit">Enviar solicitud</button>
+            <button class="btn primary" id="leadBtn" type="submit">Enviar solicitud</button>
+            <span id="leadMsg" class="lead-msg"></span>
           </div>
         </form>
       </div>
@@ -1485,6 +1494,8 @@
   </div>
 
   <!-- Cambia 34600000000 por tu número (código país + número sin espacios) -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
   <a href="https://wa.me/34625433667?text=Hola%2C%20tengo%20una%20consulta%20sobre%20AgendaVIP" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
@@ -1736,27 +1747,81 @@
       });
     });
 
-    // Lead form (demo local)
-    const STORAGE_KEY = "agendavip_leads_clean_v1";
-    function loadLeads(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); }catch{ return []; } }
-    function saveLeads(leads){ localStorage.setItem(STORAGE_KEY, JSON.stringify(leads)); }
-    function leadFromForm(){
-      const fd = new FormData($("#leadForm"));
-      const data = Object.fromEntries(fd.entries());
-      data.created_at = new Date().toISOString();
-      data.id = (crypto && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now());
-      return data;
-    }
-    $("#leadForm").addEventListener("submit", (e)=>{
+    // Lead form -> EmailJS
+    const EMAILJS_PUBLIC_KEY = "topNg38j9LTlBzeSQ";
+    const EMAILJS_SERVICE = "service_p8clbak";
+    const EMAILJS_TEMPLATE = "template_8dl1y4o";
+
+    if (typeof emailjs !== "undefined") emailjs.init(EMAILJS_PUBLIC_KEY);
+
+    document.getElementById("leadForm")?.addEventListener("submit", async function(e) {
       e.preventDefault();
-      const lead = leadFromForm();
-      const leads = loadLeads();
-      leads.unshift(lead);
-      saveLeads(leads);
-      toast("✅ Solicitud enviada");
-      $("#leadForm").reset();
-      closeModal();
-      console.log("Lead (demo local):", lead);
+
+      const btn = document.getElementById("leadBtn");
+      const msg = document.getElementById("leadMsg");
+
+      const originalText = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = "Enviando...";
+
+      msg.textContent = "";
+      msg.className = "lead-msg";
+
+      if (typeof emailjs === "undefined") {
+        msg.textContent = "Error: EmailJS no cargó. Comprueba la conexión.";
+        msg.className = "lead-msg err";
+        btn.disabled = false;
+        btn.textContent = originalText;
+        return;
+      }
+
+      const ciudad = document.getElementById("city")?.value?.trim() || "-";
+      const telefono = document.getElementById("phone")?.value?.trim() || "-";
+      const objetivo = document.getElementById("why")?.options[document.getElementById("why").selectedIndex]?.text || "-";
+      const nota = document.getElementById("note")?.value?.trim() || "";
+      const proceso = [
+        "Ciudad: " + ciudad,
+        "WhatsApp/Teléfono: " + telefono,
+        "Objetivo principal: " + objetivo,
+        nota ? "Mensaje: " + nota : ""
+      ].filter(Boolean).join("\n\n");
+
+      const templateParams = {
+        nombre: document.getElementById("name").value.trim(),
+        empresa: document.getElementById("shop").value.trim() || "-",
+        email: document.getElementById("email").value.trim(),
+        proceso: proceso
+      };
+
+      try {
+        await emailjs.send(EMAILJS_SERVICE, EMAILJS_TEMPLATE, templateParams, {
+          publicKey: EMAILJS_PUBLIC_KEY
+        });
+
+        if (typeof gtag === "function") gtag("event", "lead_submit", { method: "emailjs" });
+
+        msg.textContent = "Enviado. Te respondemos en breve.";
+        msg.className = "lead-msg ok";
+        this.reset();
+        setTimeout(closeModal, 1500);
+
+      } catch (err) {
+        console.error("EmailJS error:", err);
+        const errText = err?.text || err?.message || String(err?.status || "");
+        msg.textContent = "No se pudo enviar. " + (errText ? "(" + errText + ") " : "") + "Prueba WhatsApp.";
+        msg.className = "lead-msg err";
+        // Fallback: enlace mailto por si falla (ej. al probar con file://)
+        const fallback = document.createElement("a");
+        fallback.href = "mailto:contacto@agendavip.es?subject=Solicitud%20prueba%20AgendaVIP&body=" +
+          encodeURIComponent("Nombre: " + templateParams.nombre + "\nEmpresa: " + templateParams.empresa + "\nEmail: " + templateParams.email + "\n\n" + proceso);
+        fallback.textContent = " Enviar por email ";
+        fallback.style.marginLeft = "8px";
+        fallback.style.color = "var(--gold)";
+        msg.appendChild(fallback);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = originalText;
+      }
     });
 
     // FAQ accordion
