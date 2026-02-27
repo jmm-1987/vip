@@ -3,9 +3,32 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>AgendaVIP | Agenda privada por invitación en Telegram</title>
-  <meta name="description" content="Servicio personal y exclusivo de agenda VIP. Reservas en Telegram para peluquerías, barberías y salones que cuidan cada detalle de sus clientes habituales." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <title>AgendaVIP | Agenda privada por invitación en Telegram para peluquerías</title>
+  <meta name="description" content="Agenda VIP exclusiva para peluquerías, barberías y salones. Invita a tus clientes habituales, reservan desde Telegram en 3 clics. Sin apps, sin listas de espera. Prueba gratuita 15 días." />
+  <meta name="keywords" content="agenda peluquería, reservas Telegram, agenda VIP, barbería, salón belleza, citas online, agenda privada, fidelización clientes" />
+  <meta name="author" content="AgendaVIP" />
+  <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#070a12" />
+  <!-- Actualiza las URLs cuando tengas el dominio definitivo -->
+  <link rel="canonical" href="https://agendavip.es/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="AgendaVIP | Agenda privada por invitación en Telegram" />
+  <meta property="og:description" content="Agenda VIP para peluquerías y barberías. Tus clientes habituales reservan desde Telegram. Sin apps ni listas de espera. Prueba gratuita." />
+  <meta property="og:url" content="https://agendavip.es/" />
+  <meta property="og:image" content="https://agendavip.es/panel.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="es_ES" />
+  <meta property="og:site_name" content="AgendaVIP" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AgendaVIP | Agenda privada por invitación en Telegram" />
+  <meta name="twitter:description" content="Agenda VIP para peluquerías. Reservas en Telegram, sin apps. Prueba gratuita 15 días." />
+  <meta name="twitter:image" content="https://agendavip.es/panel.png" />
 
   <!-- Tipos (opcional). Si prefieres 100% local, bórralo. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -110,6 +133,7 @@
     .logo.logo-sm{ width: 26px; height: 26px; border-radius: 10px; }
     .logo.logo-sm svg{ padding: 4px; }
 
+    .nav-menu{display:flex;align-items:center;gap:14px}
     .nav-links{display:flex;align-items:center;gap:14px}
     .nav-links a{
       color:var(--muted);
@@ -120,6 +144,32 @@
     }
     .nav-links a:hover{color:var(--text);background:rgba(255,255,255,.06)}
     .nav-cta{display:flex;align-items:center;gap:10px}
+    .nav-hamburger{
+      display:none;
+      flex-direction:column;
+      justify-content:center;
+      gap:5px;
+      width:40px; height:40px;
+      padding:8px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.06);
+      border-radius:12px;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+    .nav-hamburger:hover{background:rgba(255,255,255,.09)}
+    .nav-hamburger span{
+      display:block;
+      width:100%;
+      height:2px;
+      background:var(--text);
+      border-radius:1px;
+      transition:.25s ease;
+    }
+    .nav-hamburger[aria-expanded="true"] span:nth-child(1){ transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger[aria-expanded="true"] span:nth-child(2){ opacity:0; }
+    .nav-hamburger[aria-expanded="true"] span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
+    .nav-backdrop{display:none}
 
     .btn{
       display:inline-flex; align-items:center; justify-content:center;
@@ -608,6 +658,18 @@
       margin-top: 24px;
     }
     .footer-row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+    .footer-legal{
+      margin-top:20px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,.06);
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px 20px;
+      align-items:center;
+      font-size:12px;
+    }
+    .footer-legal a{color:var(--muted)}
+    .footer-legal a:hover{color:var(--text)}
     .small-links{display:flex;gap:12px;flex-wrap:wrap}
     .small-links a{color:var(--muted)}
     .small-links a:hover{color:var(--text)}
@@ -684,6 +746,44 @@
     }
     .whatsapp-float svg{ width: 30px; height: 30px; }
 
+    /* Cookie banner */
+    .cookie-banner{
+      position:fixed;
+      bottom:0;
+      left:0;
+      right:0;
+      z-index:95;
+      background:linear-gradient(180deg,rgba(10,14,24,.98),rgba(7,10,18,.99));
+      border-top:1px solid var(--line);
+      padding:16px 20px 20px;
+      box-shadow:0 -4px 24px rgba(0,0,0,.4);
+      transform:translateY(100%);
+      transition:transform .35s ease;
+    }
+    .cookie-banner.show{ transform:translateY(0); }
+    .cookie-banner-inner{
+      max-width:var(--max);
+      margin:0 auto;
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      gap:16px;
+      justify-content:space-between;
+    }
+    .cookie-banner p{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.5;
+      flex:1 1 280px;
+    }
+    .cookie-banner p a{color:var(--gold)}
+    .cookie-banner-btns{
+      display:flex;
+      gap:10px;
+      flex-shrink:0;
+    }
+
     .toast{
       position: fixed;
       left: 50%;
@@ -710,7 +810,48 @@
       .container{padding: 0 10px}
       .grid-3{grid-template-columns: 1fr}
       .grid-2{grid-template-columns: 1fr}
-      .nav-links{display:none}
+      .brand .brand-text{display:none}
+      .nav-hamburger{display:flex}
+      .nav-backdrop{display:block}
+      .nav-menu{
+        position:fixed;
+        top:0; right:0;
+        width:min(280px,85vw);
+        height:100vh;
+        flex-direction:column;
+        align-items:stretch;
+        justify-content:flex-start;
+        gap:0;
+        padding:80px 20px 24px;
+        background:linear-gradient(to bottom, rgba(7,10,18,.98), rgba(7,10,18,.96));
+        border-left:1px solid var(--line);
+        box-shadow:-8px 0 32px rgba(0,0,0,.4);
+        transform:translateX(100%);
+        transition:transform .3s ease;
+        z-index:40;
+      }
+      .nav.nav--open .nav-menu{ transform:translateX(0); }
+      .nav-menu .nav-links{
+        flex-direction:column;
+        align-items:stretch;
+      }
+      .nav-menu .nav-links a{
+        padding:14px 0;
+        font-size:15px;
+        border-bottom:1px solid var(--line);
+      }
+      .nav-menu .nav-cta{
+        margin-top:20px;
+      }
+      .nav-menu .nav-cta .btn{ width:100%; justify-content:center; }
+      .nav-backdrop{
+        position:fixed; inset:0; z-index:39;
+        background:rgba(0,0,0,.5);
+        opacity:0;
+        pointer-events:none;
+        transition:opacity .3s ease;
+      }
+      .nav.nav--open .nav-backdrop{ opacity:1; pointer-events:auto; }
       .form{grid-template-columns: 1fr}
     }
     @media (max-width: 480px){
@@ -718,6 +859,53 @@
       .hero-grid{gap: 24px}
       .section{padding: 48px 0}
     }
+    /* INTRO LOGO */
+    .intro-overlay{
+      position:fixed; inset:0; z-index:9999;
+      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px;
+      background: var(--bg);
+      transition: opacity .4s ease;
+    }
+    .intro-overlay.hide{ opacity:0; pointer-events:none; }
+    .intro-overlay .logo-intro{
+      width:80px; height:80px;
+      animation: intro-spin 2s ease-out forwards;
+    }
+    .intro-overlay .logo-intro svg{ width:100%; height:100%; display:block; }
+    .intro-overlay .intro-title{
+      font-weight:700;
+      font-size:18px;
+      letter-spacing:.15em;
+      color:var(--text);
+    }
+    .intro-overlay .intro-bar{
+      width:140px;
+      height:4px;
+      background: rgba(255,255,255,.12);
+      border-radius:999px;
+      overflow:hidden;
+    }
+    .intro-overlay .intro-bar-fill{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+      border-radius:999px;
+      animation: intro-bar 2s ease-out forwards;
+    }
+    @keyframes intro-spin{
+      0%{ transform: rotate(0deg); opacity:1; }
+      100%{ transform: rotate(360deg); opacity:1; }
+    }
+    @keyframes intro-bar{
+      0%{ width: 0%; }
+      100%{ width: 100%; }
+    }
+    @media (prefers-reduced-motion: reduce){
+      .intro-overlay .logo-intro{ animation: none; }
+      .intro-overlay .intro-bar-fill{ animation: none; width: 100%; }
+      .intro-overlay{ transition-duration: .2s; }
+    }
+
     @media (prefers-reduced-motion: reduce){
       *{transition:none !important; scroll-behavior:auto !important}
       .btn:hover{transform:none !important}
@@ -727,9 +915,79 @@
       .panel-selector-bg::before{ animation: none !important; }
     }
   </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "name": "AgendaVIP",
+        "url": "https://agendavip.es",
+        "description": "Servicio de agenda privada por invitación en Telegram para peluquerías, barberías y salones."
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "AgendaVIP",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web, Telegram",
+        "description": "Agenda VIP exclusiva para peluquerías. Invita a tus clientes habituales, reservan desde Telegram en 3 clics. Sin apps ni listas de espera.",
+        "offers": {
+          "@type": "Offer",
+          "price": "19",
+          "priceCurrency": "EUR",
+          "priceValidUntil": "2026-12-31"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "¿El cliente necesita instalar algo?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Solo Telegram. No hay app adicional ni creación de cuentas." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Puedo controlar horarios y servicios?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Sí. Definirás servicios, duración, horarios, antelación y ventana de reservas." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Sirve para equipos?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Sí. Puedes gestionarlo por profesional y por servicio." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Cómo empiezo?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Solicita acceso y te acompañamos personalmente para configurar tu agenda e invitaciones a tu medida." }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
 </head>
 
 <body>
+  <div class="intro-overlay" id="introOverlay" aria-hidden="true">
+    <div class="logo-intro">
+      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 15L85 35V65L50 85L15 65V35L50 15Z" stroke="url(#goldGradientIntro)" stroke-width="6" stroke-linejoin="round"/>
+        <path d="M35 65L50 30L65 65M42 52H58" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        <defs>
+          <linearGradient id="goldGradientIntro" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#d7b36a" />
+            <stop offset="100%" stop-color="#f3e2b6" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <div class="intro-title">AgendaVIP</div>
+    <div class="intro-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+      <div class="intro-bar-fill" id="introBarFill"></div>
+    </div>
+  </div>
   <div class="bg" aria-hidden="true"></div>
   <div class="grain" aria-hidden="true"></div>
 
@@ -749,27 +1007,35 @@
               </defs>
             </svg>
           </div>
-          <div>
+          <div class="brand-text">
             <div style="font-size:14px;line-height:1">AgendaVIP</div>
             <div style="font-size:12px;color:var(--muted);line-height:1.1">Servicio personal · Telegram</div>
           </div>
         </a>
 
-        <div class="nav-links" aria-label="Navegación">
-          <a href="#como-funciona">Cómo funciona</a>
-          <a href="#para-quien">Para quién es</a>
-          <a href="#precio">Acceso</a>
-          <a href="#faq">FAQ</a>
-        </div>
+        <button class="nav-hamburger" id="navHamburger" type="button" aria-expanded="false" aria-controls="navMobileMenu" aria-label="Abrir menú">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
 
-        <div class="nav-cta">
-          <button class="btn primary" id="btnOpen" type="button">Prueba gratuita 15 días</button>
+        <div class="nav-backdrop" id="navBackdrop" aria-hidden="true"></div>
+        <div class="nav-menu" id="navMobileMenu">
+          <div class="nav-links" aria-label="Navegación">
+            <a href="#como-funciona">Cómo funciona</a>
+            <a href="#para-quien">Para quién es</a>
+            <a href="#precio">Acceso</a>
+            <a href="#faq">FAQ</a>
+          </div>
+          <div class="nav-cta">
+            <button class="btn primary" id="btnOpen" type="button">Prueba gratuita 15 días</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <main id="top">
+  <main id="top" role="main">
     <section class="hero">
       <video id="heroVideo1" class="hero-bg-video" autoplay muted playsinline aria-hidden="true">
         <source src="fondo_mov.mp4" type="video/mp4">
@@ -811,6 +1077,12 @@
                   <path d="M21 15a4 4 0 0 1-4 4H7l-4 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v8Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
                 </svg>
                 Solo clientes invitados
+              </span>
+              <span class="pill">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Fideliza clientes
               </span>
             </div>
           </div>
@@ -877,6 +1149,7 @@
             <p>Tu agenda, tus reglas, tus recordatorios. Un panel pensado para ti, no para gestionar masas.</p>
           </div>
         </div>
+        <p style="margin-top:28px;color:var(--muted);font-size:1rem;max-width:560px">Al invitarlos les facilitas reservar contigo, no con la competencia —las apps que agrupan muchas peluquerías muestran otras opciones; aquí solo está tu agenda.</p>
       </div>
     </section>
 
@@ -1121,6 +1394,13 @@
             <a href="#precio">Acceso</a>
           </div>
         </div>
+        <div class="footer-legal">
+          <a href="aviso-legal.html">Aviso legal</a>
+          <a href="politica-privacidad.html">Política de privacidad</a>
+          <a href="politica-cookies.html">Política de cookies</a>
+          <span style="color:var(--muted)">·</span>
+          <a href="mailto:contacto@agendavip.es">contacto@agendavip.es</a>
+        </div>
       </div>
     </footer>
   </main>
@@ -1189,6 +1469,21 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+  <div class="cookie-banner" id="cookieBanner" role="dialog" aria-label="Aviso de cookies">
+    <div class="cookie-banner-inner">
+      <div>
+        <p>
+          Utilizamos cookies para analizar el tráfico y mejorar tu experiencia. Puedes aceptar o rechazar las cookies analíticas.
+          <a href="politica-cookies.html">Más información</a>
+        </p>
+      </div>
+      <div class="cookie-banner-btns">
+        <button type="button" class="btn" id="cookieReject">Rechazar</button>
+        <button type="button" class="btn primary" id="cookieAccept">Aceptar</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Cambia 34600000000 por tu número (código país + número sin espacios) -->
   <a href="https://wa.me/34625433667?text=Hola%2C%20tengo%20una%20consulta%20sobre%20AgendaVIP" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -1199,6 +1494,76 @@
   <script>
     const $ = (sel, root=document) => root.querySelector(sel);
     const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+
+    const COOKIE_CONSENT_KEY = "agendavip-cookies";
+    const GA_ID = "G-9ZND42296P";
+
+    // Cookie consent + Google Analytics (solo si acepta)
+    (function initCookies(){
+      const banner = document.getElementById("cookieBanner");
+      const btnAccept = document.getElementById("cookieAccept");
+      const btnReject = document.getElementById("cookieReject");
+      const consent = localStorage.getItem(COOKIE_CONSENT_KEY);
+
+      function loadGA(){
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag("js", new Date());
+        gtag("config", GA_ID);
+        const s = document.createElement("script");
+        s.async = true;
+        s.src = "https://www.googletagmanager.com/gtag/js?id=" + GA_ID;
+        document.head.appendChild(s);
+      }
+
+      function hide(){
+        if (banner) banner.classList.remove("show");
+      }
+
+      if (consent === "accepted") {
+        loadGA();
+      } else if (consent === "rejected") {
+        // No cargar GA
+      } else if (banner) {
+        banner.classList.add("show");
+        if (btnAccept) btnAccept.addEventListener("click", ()=>{
+          localStorage.setItem(COOKIE_CONSENT_KEY, "accepted");
+          loadGA();
+          hide();
+        });
+        if (btnReject) btnReject.addEventListener("click", ()=>{
+          localStorage.setItem(COOKIE_CONSENT_KEY, "rejected");
+          hide();
+        });
+      }
+    })();
+
+    // Intro overlay: logo girando 2s
+    (function initIntro(){
+      const intro = document.getElementById("introOverlay");
+      if (!intro) return;
+      setTimeout(() => intro.classList.add("hide"), 2000);
+      setTimeout(() => intro.remove(), 2500);
+    })();
+
+    // Nav móvil: menú hamburguesa
+    (function initNavMobile(){
+      const nav = document.querySelector(".nav");
+      const hamburger = document.getElementById("navHamburger");
+      const backdrop = document.getElementById("navBackdrop");
+      const menuLinks = document.querySelectorAll(".nav-menu a");
+      function close(){
+        nav.classList.remove("nav--open");
+        if (hamburger) hamburger.setAttribute("aria-expanded", "false");
+      }
+      function toggle(){
+        const open = nav.classList.toggle("nav--open");
+        if (hamburger) hamburger.setAttribute("aria-expanded", open);
+      }
+      if (hamburger) hamburger.addEventListener("click", toggle);
+      if (backdrop) backdrop.addEventListener("click", close);
+      menuLinks.forEach(a => a.addEventListener("click", close));
+    })();
 
     // Hero videos: fondo_mov → video_Unisex → repeat
     (function initHeroVideos(){
