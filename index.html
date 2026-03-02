@@ -1538,7 +1538,15 @@
     </div>
   </div>
 
-  <!-- Cambia 34600000000 por tu número (código país + número sin espacios) -->
+  <!-- Google Analytics (carga directa para registrar visitas) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9ZND42296P"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-9ZND42296P');
+  </script>
+
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
   <a href="https://wa.me/34625433667?text=Hola%2C%20tengo%20una%20consulta%20sobre%20AgendaVIP" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
@@ -1554,37 +1562,23 @@
     const COOKIE_CONSENT_KEY = "agendavip-cookies";
     const GA_ID = "G-9ZND42296P";
 
-    // Cookie consent + Google Analytics (solo si acepta)
+    // Cookie consent (GA ya se carga siempre para registrar visitas)
     (function initCookies(){
       const banner = document.getElementById("cookieBanner");
       const btnAccept = document.getElementById("cookieAccept");
       const btnReject = document.getElementById("cookieReject");
       const consent = localStorage.getItem(COOKIE_CONSENT_KEY);
 
-      function loadGA(){
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag("js", new Date());
-        gtag("config", GA_ID);
-        const s = document.createElement("script");
-        s.async = true;
-        s.src = "https://www.googletagmanager.com/gtag/js?id=" + GA_ID;
-        document.head.appendChild(s);
-      }
-
       function hide(){
         if (banner) banner.classList.remove("show");
       }
 
-      if (consent === "accepted") {
-        loadGA();
-      } else if (consent === "rejected") {
-        // No cargar GA
+      if (consent === "accepted" || consent === "rejected") {
+        // Ya eligió, no mostrar banner
       } else if (banner) {
         banner.classList.add("show");
         if (btnAccept) btnAccept.addEventListener("click", ()=>{
           localStorage.setItem(COOKIE_CONSENT_KEY, "accepted");
-          loadGA();
           hide();
         });
         if (btnReject) btnReject.addEventListener("click", ()=>{
