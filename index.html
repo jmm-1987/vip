@@ -279,6 +279,12 @@
       margin: 0 0 24px;
       line-height: 1.5;
     }
+    .subhead.subhead-refuerzo{
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 56ch;
+      margin-top: 6px;
+    }
     .cta-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top: 10px;}
 
     .microtrust{
@@ -390,6 +396,88 @@
 
     /* SECTIONS */
     .section{padding: 72px 0;}
+
+    /* Comparativa sistemas abiertos vs AgendaVIP */
+    .section-compare{
+      position: relative;
+      z-index: 8;
+      margin-top: -48px;
+      padding-top: 96px;
+      padding-bottom: 72px;
+      background: radial-gradient(700px 360px at 15% 0%, rgba(215,179,106,.12), transparent 55%),
+                  radial-gradient(700px 360px at 85% 0%, rgba(124,92,255,.10), transparent 55%),
+                  linear-gradient(180deg, rgba(7,10,18,.96), rgba(7,10,18,.96));
+      box-shadow: 0 -8px 48px rgba(0,0,0,.5);
+      border-radius: 32px 32px 0 0;
+    }
+    .section-compare h2{
+      margin: 0 0 10px;
+      font-family: var(--serif);
+      font-size: clamp(24px, 2.6vw, 34px);
+      letter-spacing: -.6px;
+      font-weight: 600;
+    }
+    .compare-layout{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 24px;
+      margin-top: 26px;
+    }
+    .compare-column h3{
+      margin: 0 0 10px;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      color: var(--muted);
+    }
+    .compare-column-vip h3{
+      color: rgba(243,226,182,.9);
+    }
+    .compare-list{
+      list-style:none;
+      margin:0;
+      padding:0;
+    }
+    .compare-item{
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.04);
+      background: rgba(255,255,255,.02);
+      color: rgba(238,241,251,.9);
+      font-size: 14px;
+      margin-bottom: 8px;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity .45s ease, transform .45s ease, border-color .2s ease, background .2s ease;
+    }
+    .compare-item.is-visible{
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .compare-item-open{
+      border-left: 2px solid rgba(248,113,113,.6);
+    }
+    .compare-item-vip{
+      border-left: 2px solid rgba(52,211,153,.7);
+    }
+    .compare-footer{
+      margin-top: 28px;
+      font-size: 20px;
+      color: rgba(243,226,182,.9);
+      font-family: var(--serif);
+      letter-spacing: -.4px;
+      text-align: center;
+    }
+    @media (max-width: 820px){
+      .section-compare{
+        margin-top: -36px;
+        padding-top: 80px;
+      }
+      .compare-layout{
+        grid-template-columns: minmax(0,1fr);
+        gap: 14px;
+      }
+    }
 
     /* Cómo funciona — entra por encima de la portada al hacer scroll */
     #como-funciona{
@@ -1151,7 +1239,7 @@
             <a href="#faq">FAQ</a>
           </div>
           <div class="nav-cta">
-            <button class="btn primary" id="btnOpen" type="button">Prueba gratuita 15 días</button>
+            <button class="btn primary" id="btnOpen" type="button">Solicitar acceso privado</button>
           </div>
         </div>
       </div>
@@ -1169,22 +1257,24 @@
       <div class="container">
         <div class="hero-grid">
           <div>
-            <div class="badge">
-              <span class="dot" aria-hidden="true"></span>
-              <span>Servicio personal · plazas limitadas para acompañamiento</span>
-            </div>
-
             <h1>
               La agenda privada<br/>
-              que <span style="color:transparent;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;background-clip:text;">protege tu tiempo</span>.
+              para quienes valoran el
+              <span style="color:transparent;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;background-clip:text;">trato personal</span>.
             </h1>
 
             <p class="subhead">
-              Un servicio pensado para ti y tus habituales. Invitas personalmente, reservan en Telegram y mantienes una agenda exclusiva, sin listas de espera ni reservas anónimas.
+              Invitas a tus clientes habituales.<br/>
+              Reservan contigo desde Telegram de forma sencilla y directa.<br/>
+              Sin exposición pública. Sin fricción. Sin ruido.
+            </p>
+
+            <p class="subhead subhead-refuerzo">
+              Pensada para peluquerías y barberías que trabajan con agenda llena y priorizan la experiencia.
             </p>
 
             <div class="cta-row">
-              <button class="btn primary" id="btnOpen2" type="button">Prueba gratuita 15 días</button>
+              <button class="btn primary" id="btnOpen2" type="button">Solicitar acceso privado</button>
               <a class="btn" href="#como-funciona">Cómo funciona</a>
             </div>
 
@@ -1220,6 +1310,38 @@
           </div>
 
         </div>
+      </div>
+    </section>
+
+    <section class="section section-compare" id="comparacion">
+      <div class="container">
+        <h2>Una forma distinta de gestionar tu agenda</h2>
+        <p style="margin:0 0 10px;color:var(--muted);font-size:1rem">Lo que ocurre cuando abres tu agenda a todo el mundo frente a cuando la cuidas como un club privado.</p>
+
+        <div class="compare-layout">
+          <div class="compare-column compare-left">
+            <h3>Sistemas abiertos</h3>
+            <ul class="compare-list">
+              <li class="compare-item compare-item-open" data-step="1">Reservas públicas.</li>
+              <li class="compare-item compare-item-open" data-step="2">Acceso para cualquier cliente.</li>
+              <li class="compare-item compare-item-open" data-step="3">Experiencia impersonal.</li>
+              <li class="compare-item compare-item-open" data-step="4">Comparación constante con otros negocios.</li>
+            </ul>
+          </div>
+          <div class="compare-column compare-column-vip compare-right">
+            <h3>AgendaVIP</h3>
+            <ul class="compare-list">
+              <li class="compare-item compare-item-vip" data-step="1">Acceso solo por invitación.</li>
+              <li class="compare-item compare-item-vip" data-step="2">Relación directa con tus habituales.</li>
+              <li class="compare-item compare-item-vip" data-step="3">Experiencia cuidada y privada.</li>
+              <li class="compare-item compare-item-vip" data-step="4">Control total sobre horarios y reglas.</li>
+            </ul>
+          </div>
+        </div>
+
+        <p class="compare-footer">
+         
+        </p>
       </div>
     </section>
 
@@ -1299,7 +1421,7 @@
     <section class="section section-bg-espera" id="para-quien">
       <div class="container">
         <h2>Para quién es</h2>
-        <p>Para profesionales que prefieren un trato personal: conoces a tus clientes y quieres una herramienta a tu medida.</p>
+        <p>Diseñada para profesionales que ya han construido su clientela. AgendaVIP no está pensada para competir en volumen, sino como una herramienta privada para quienes prefieren un trato personal.</p>
 
         <div class="grid-3">
           <div class="feature">
@@ -1344,15 +1466,15 @@
               <div class="card">
                 <h3>Encaja si...</h3>
                 <div class="row">
-                  <div><div style="font-weight:700">Tienes habituales</div><small>Clientes recurrentes y fidelizados</small></div>
+                  <div><div style="font-weight:700">Tienes habituales</div><small>Has construido una base de clientes recurrentes y fidelizados</small></div>
                   <span class="tag gold">Sí</span>
                 </div>
                 <div class="row">
-                  <div><div style="font-weight:700">Quieres control</div><small>Reglas, antelación, huecos y servicios</small></div>
+                  <div><div style="font-weight:700">Quieres control</div><small>Reglas, antelación, huecos y servicios con orden sin perder cercanía</small></div>
                   <span class="tag gold">Sí</span>
                 </div>
                 <div class="row">
-                  <div><div style="font-weight:700">Te importa la experiencia</div><small>Un trato VIP para cada cliente</small></div>
+                  <div><div style="font-weight:700">Te importa la experiencia</div><small>Valoras la discreción y la calidad antes que la cantidad</small></div>
                   <span class="tag ok">Sí</span>
                 </div>
               </div>
@@ -1463,30 +1585,13 @@
 
           <div class="panel">
             <div class="panel-inner">
-              <div class="card">
-                <h3>Mensaje rápido para DM</h3>
-                <div class="row" style="margin-top:0">
-                  <div>
-                    <small>Texto:</small><br/>
-                    <span id="pitchText" style="color:rgba(238,241,251,.92);">
-                      “Tengo una agenda VIP: solo invito a mis habituales. Reservas conmigo en 2 clics desde Telegram, sin apps ni listas de espera.”
-                    </span>
-                  </div>
-                </div>
-                <div class="row">
-                  <div>
-                    <div style="font-weight:700">Ideal para</div>
-                    <small>agenda llena + clientes recurrentes</small>
-                  </div>
-                  <span class="tag gold">VIP</span>
-                </div>
-                <div class="row">
-                  <div>
-                    <div style="font-weight:700">Resultado</div>
-                    <small>menos interrupciones, más orden</small>
-                  </div>
-                  <span class="tag ok">Pro</span>
-                </div>
+              <div class="card" style="text-align:center;">
+                <h3 style="margin:0;font-family:var(--serif);font-size:24px;letter-spacing:-0.4px;line-height:1.25;">
+                  mantén tu agenda en manos de<br/>
+                  <span style="color:transparent;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;background-clip:text;">
+                    quien realmente importa
+                  </span>
+                </h3>
               </div>
             </div>
           </div>
@@ -1516,6 +1621,22 @@
           <div class="q" role="button" tabindex="0" aria-expanded="false">
             <h3>¿Cómo empiezo? <span aria-hidden="true">+</span></h3>
             <div class="a"><p>Solicita acceso y te acompañamos personalmente para configurar tu agenda e invitaciones a tu medida.</p></div>
+          </div>
+          <div class="q" role="button" tabindex="0" aria-expanded="false">
+            <h3>¿Hay permanencia o compromiso mínimo? <span aria-hidden="true">+</span></h3>
+            <div class="a"><p>No. Puedes cancelar cuando quieras. Si tras la prueba o el primer mes ves que no encaja, lo paramos sin más.</p></div>
+          </div>
+          <div class="q" role="button" tabindex="0" aria-expanded="false">
+            <h3>¿Puedo seguir atendiendo reservas por WhatsApp o teléfono? <span aria-hidden="true">+</span></h3>
+            <div class="a"><p>Sí. AgendaVIP no sustituye tu forma de atender, la ordena. Puedes seguir usando WhatsApp o llamadas y, si quieres, ir derivando poco a poco a Telegram.</p></div>
+          </div>
+          <div class="q" role="button" tabindex="0" aria-expanded="false">
+            <h3>¿Qué pasa si un cliente no usa Telegram? <span aria-hidden="true">+</span></h3>
+            <div class="a"><p>Puedes seguir reservando para él desde tu panel o tu móvil. Telegram es la vía principal para tus habituales, pero no dejas de atender a quien prefiere otro canal.</p></div>
+          </div>
+          <div class="q" role="button" tabindex="0" aria-expanded="false">
+            <h3>¿Me ayudáis con la puesta en marcha? <span aria-hidden="true">+</span></h3>
+            <div class="a"><p>Sí. Te acompañamos en la configuración inicial de servicios, horarios y mensajes, y te damos ejemplos para comunicarlo a tus clientes habituales.</p></div>
           </div>
         </div>
       </div>
@@ -1645,13 +1766,13 @@
     </div>
   </div>
 
-  <!-- Google Analytics (carga directa para registrar visitas) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9ZND42296P"></script>
+  <!-- Google tag (GA4) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GM4DMVML5E"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-9ZND42296P');
+    gtag('config', 'G-GM4DMVML5E');
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -1667,7 +1788,7 @@
     const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
 
     const COOKIE_CONSENT_KEY = "agendavip-cookies";
-    const GA_ID = "G-9ZND42296P";
+    const GA_ID = "G-GM4DMVML5E";
 
     // Cookie consent (GA ya se carga siempre para registrar visitas)
     (function initCookies(){
@@ -1774,6 +1895,41 @@
     }, { threshold: .25 });
     const comoSection = $("#como-funciona");
     if(comoSection) ioComo.observe(comoSection);
+
+    // Comparativa: mostrar pares poco a poco al entrar en vista
+    (function initComparacion(){
+      const section = document.getElementById("comparacion");
+      if (!section) return;
+
+      const maxStep = 4;
+      let currentStep = 0;
+      let intervalId = null;
+
+      function showNext(){
+        currentStep += 1;
+        const left = section.querySelector('.compare-left [data-step="'+currentStep+'"]');
+        const right = section.querySelector('.compare-right [data-step="'+currentStep+'"]');
+        if (left) left.classList.add("is-visible");
+        if (right) right.classList.add("is-visible");
+
+        if (currentStep >= maxStep && intervalId){
+          clearInterval(intervalId);
+        }
+      }
+
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+          if (entry.isIntersecting && !intervalId){
+            // Mostrar la primera pareja al entrar en vista
+            showNext();
+            intervalId = setInterval(showNext, 900);
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: .35 });
+
+      io.observe(section);
+    })();
 
     // Selector panel móvil / PC
     $$(".panel-selector-tabs button").forEach(btn=>{
