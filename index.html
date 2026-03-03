@@ -1234,7 +1234,7 @@
           <div class="nav-links" aria-label="Navegación">
             <a href="#como-funciona">Cómo funciona</a>
             <a href="#para-quien">Para quién es</a>
-            <a href="#testimonios">Acceso privado</a>
+            <a href="#acceso-privado">Acceso privado</a>
             <a href="#faq">FAQ</a>
           </div>
           <div class="nav-cta">
@@ -1269,8 +1269,7 @@
             </p>
 
             <p class="subhead subhead-refuerzo">
-              Pensada para peluquerías y barberías que trabajan con agenda llena y priorizan la experiencia.<br/>
-              Si trabajas principalmente con clientes habituales y tu agenda está activa, este sistema está pensado para ti.
+              Pensada para peluquerías y barberías con clientela recurrente y agenda activa. Si trabajas principalmente con habituales, este sistema es para ti.
             </p>
 
             <div class="cta-row">
@@ -1510,10 +1509,10 @@
       </div>
     </section>
 
-    <section class="section" id="testimonios">
+    <section class="section" id="acceso-privado">
       <div class="container">
         <h2>Acceso privado en fase inicial</h2>
-        <p>AgendaVIP está abriendo acceso progresivamente, sin coste inicial, a un número reducido de profesionales.</p>
+        <p>AgendaVIP está abriendo acceso progresivamente, con una prueba gratuita acompañada, a un número reducido de profesionales.</p>
 
         <div class="grid-2">
           <div>
@@ -1554,7 +1553,7 @@
               <div class="tag gold" style="display:inline-flex;gap:8px;align-items:center;margin-bottom:10px">Plan Pro</div>
               <h3 style="margin:0 0 6px;font-size:16px">Agenda privada + Telegram</h3>
               <div class="big">19€ <span>/ mes</span></div>
-              <p class="price-hook">Menos de 1€ al día · Garantía 15 días</p>
+              <p class="price-hook">Menos de 1€ al día · Prueba gratuita 15 días</p>
               <ul class="clean">
                 <li>Invitaciones por enlace privado</li>
                 <li>Reservas en Telegram</li>
@@ -1566,7 +1565,7 @@
               <div class="cta-row" style="margin-top:14px">
                 <button class="btn primary" id="btnOpen3" type="button">Prueba gratuita 15 días</button>
               </div>
-              <p class="fine">Cancela cuando quieras. Si no encaja en 15 días, te devolvemos.</p>
+              <p class="fine">Cancela cuando quieras. Sin permanencia.</p>
             </div>
           </div>
 
@@ -1575,7 +1574,7 @@
               <div class="tag gold" style="display:inline-flex;gap:8px;align-items:center;margin-bottom:10px">Plan Pro + Web</div>
               <h3 style="margin:0 0 6px;font-size:16px">Todo lo anterior + página corporativa</h3>
               <div class="big">25€ <span>/ mes</span></div>
-              <p class="price-hook">Todo incluido · Garantía 15 días</p>
+              <p class="price-hook">Todo incluido · Prueba gratuita 15 días</p>
               <ul class="clean">
                 <li>Todo lo del Plan Pro</li>
                 <li>Página web corporativa incluida</li>
@@ -1673,7 +1672,7 @@
           <div class="small-links">
             <a href="#como-funciona">Cómo funciona</a>
             <a href="#para-quien">Para quién es</a>
-            <a href="#testimonios">Acceso privado</a>
+            <a href="#acceso-privado">Acceso privado</a>
           </div>
         </div>
         <div class="footer-legal">
@@ -2060,7 +2059,7 @@
 
     // Init
     $("#year").textContent = new Date().getFullYear();
-    setDemo("panel");
+    if (typeof setDemo === "function") setDemo("panel");
   </script>
 </body>
 </html>
