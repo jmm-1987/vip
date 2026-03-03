@@ -1229,13 +1229,12 @@
         </button>
 
         <div class="nav-backdrop" id="navBackdrop" aria-hidden="true"></div>
-        <div class="nav-menu" id="navMobileMenu">
+          <div class="nav-menu" id="navMobileMenu">
           <button class="nav-close-btn" id="navCloseBtn" type="button" aria-label="Cerrar menú">✕</button>
           <div class="nav-links" aria-label="Navegación">
             <a href="#como-funciona">Cómo funciona</a>
             <a href="#para-quien">Para quién es</a>
-            <a href="#testimonios">Testimonios</a>
-            <a href="#precio">Acceso</a>
+            <a href="#testimonios">Acceso privado</a>
             <a href="#faq">FAQ</a>
           </div>
           <div class="nav-cta">
@@ -1507,31 +1506,32 @@
 
     <section class="section" id="testimonios">
       <div class="container">
-        <h2>Lo que dicen profesionales como tú</h2>
-        <p>Peluquerías y barberías que ya usan AgendaVIP.</p>
+        <h2>Acceso privado en fase inicial</h2>
+        <p>AgendaVIP está abriendo acceso progresivamente, sin coste inicial, a un número reducido de profesionales.</p>
 
-        <div class="testimonios-grid">
-          <div class="testimonial">
-            <div class="testimonial-stars" aria-hidden="true">★★★★★</div>
-            <p class="testimonial-text">"Por fin una agenda que respeta mi forma de trabajar. Solo mis habituales, reservan en 2 clics y yo controlo todo."</p>
-            <div class="testimonial-author">
-              <strong>— Peluquería, Madrid</strong>
-            </div>
+        <div class="grid-2">
+          <div>
+            <p style="color:var(--muted);font-size:1rem;line-height:1.6;margin-top:0;">
+              El objetivo es ofrecer configuración acompañada y un sistema adaptado a cada negocio.
+            </p>
+            <p style="color:var(--muted);font-size:1rem;line-height:1.6;">
+              No buscamos volumen. Buscamos profesionales que trabajen con clientes recurrentes y valoren el trato personal.
+            </p>
           </div>
-          <div class="testimonial">
-            <div class="testimonial-stars" aria-hidden="true">★★★★★</div>
-            <p class="testimonial-text">"Cero estrés con las reservas. Mis clientes ya tienen Telegram, no tienen que instalar nada y a mí me organiza el día."</p>
-            <div class="testimonial-author">
-              <strong>— Barbería, Valencia</strong>
-            </div>
+          <div>
+            <h3 style="margin:0 0 10px;font-size:15px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);">
+              Diseñada a partir de una necesidad real
+            </h3>
+            <p style="color:var(--muted);font-size:1rem;line-height:1.6;margin:0 0 10px;">
+              AgendaVIP nace para resolver algo muy concreto: evitar que clientes desconocidos ocupen huecos destinados a habituales y mantener una relación directa sin intermediarios.
+            </p>
+            <p style="color:var(--muted);font-size:1rem;line-height:1.6;margin:0;">
+              No es una plataforma abierta. Es un sistema privado por invitación.
+            </p>
           </div>
-          <div class="testimonial">
-            <div class="testimonial-stars" aria-hidden="true">★★★★★</div>
-            <p class="testimonial-text">"El trato personal marca la diferencia. AgendaVIP encaja perfecto con cómo queremos tratar a nuestros clientes."</p>
-            <div class="testimonial-author">
-              <strong>— Salón premium, Barcelona</strong>
-            </div>
-          </div>
+        </div>
+        <div class="cta-row" style="margin-top:28px;justify-content:center;">
+          <button class="btn primary" id="btnOpen5" type="button">Solicitar acceso de prueba</button>
         </div>
       </div>
     </section>
@@ -1666,8 +1666,7 @@
           <div class="small-links">
             <a href="#como-funciona">Cómo funciona</a>
             <a href="#para-quien">Para quién es</a>
-            <a href="#testimonios">Testimonios</a>
-            <a href="#precio">Acceso</a>
+            <a href="#testimonios">Acceso privado</a>
           </div>
         </div>
         <div class="footer-legal">
@@ -1691,8 +1690,13 @@
 
       <div class="content">
         <p style="margin:0 0 12px;color:rgba(238,241,251,.88)">
-          Déjanos tus datos y te contactamos para activar tu prueba gratuita de 15 días.
+          Puedes dejarnos tus datos o escribirnos directamente por WhatsApp. Elige cómo prefieres empezar.
         </p>
+
+        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+          <button type="button" class="btn primary" id="openFormBtn">Rellenar formulario</button>
+          <a href="https://wa.me/34625433667?text=Hola%2C%20quiero%20m%C3%A1s%20informaci%C3%B3n%20sobre%20AgendaVIP" target="_blank" rel="noopener noreferrer" class="btn">Hablar por WhatsApp</a>
+        </div>
 
         <form id="leadForm" class="form">
           <div>
@@ -1873,7 +1877,7 @@
 
     // Modal
     const backdrop = $("#modalBackdrop");
-    const openButtons = ["#btnOpen","#btnOpen2","#btnOpen3","#btnOpen4"].map(id=>$(id)).filter(Boolean);
+    const openButtons = ["#btnOpen","#btnOpen2","#btnOpen3","#btnOpen4","#btnOpen5"].map(id=>$(id)).filter(Boolean);
 
     function openModal(){
       backdrop.style.display = "flex";
@@ -1888,6 +1892,15 @@
     $("#btnClose").addEventListener("click", closeModal);
     backdrop.addEventListener("click", (e)=>{ if(e.target === backdrop) closeModal(); });
     window.addEventListener("keydown", (e)=>{ if(e.key === "Escape" && backdrop.style.display === "flex") closeModal(); });
+
+    // Botón para hacer foco rápido en el formulario dentro del modal
+    const openFormBtn = document.getElementById("openFormBtn");
+    if (openFormBtn) {
+      openFormBtn.addEventListener("click", () => {
+        const firstInput = document.getElementById("name");
+        if (firstInput) firstInput.focus();
+      });
+    }
 
     // Animación "Cómo funciona" — entran desde la izquierda al hacer scroll
     const ioComo = new IntersectionObserver((entries)=>{
