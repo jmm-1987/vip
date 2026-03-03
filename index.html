@@ -769,46 +769,6 @@
     ul.clean li{margin: 8px 0}
     .fine{font-size:12px;color: rgba(233,236,247,.74); margin-top:12px}
 
-    /* Testimonios */
-    .testimonios-grid{
-      display:grid;
-      gap:24px;
-      grid-template-columns: repeat(3, 1fr);
-      margin-top: 28px;
-    }
-    .testimonial{
-      background: rgba(255,255,255,.03);
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: var(--radius2);
-      padding: 22px;
-      transition: border-color .2s ease, box-shadow .2s ease;
-    }
-    .testimonial:hover{
-      border-color: rgba(215,179,106,.2);
-      box-shadow: 0 12px 40px rgba(0,0,0,.2);
-    }
-    .testimonial-stars{
-      color: var(--gold);
-      font-size: 14px;
-      letter-spacing: 2px;
-      margin-bottom: 10px;
-    }
-    .testimonial-text{
-      color: rgba(238,241,251,.88);
-      font-size: 15px;
-      line-height: 1.55;
-      margin: 0 0 14px;
-      font-style: italic;
-    }
-    .testimonial-author{
-      font-size: 13px;
-      color: var(--muted);
-    }
-    .testimonial-author strong{ color: rgba(243,226,182,.9); font-weight: 600; }
-    @media (max-width: 820px){
-      .testimonios-grid{ grid-template-columns: 1fr; }
-    }
-
     /* FAQ */
     .faq .q{
       border:1px solid rgba(255,255,255,.08);
@@ -868,6 +828,9 @@
       border:1px solid rgba(255,255,255,.14);
       background: linear-gradient(180deg, rgba(14,18,28,.98), rgba(10,14,24,.98));
       box-shadow: 0 24px 80px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.08) inset;
+      max-height: 90vh;
+      display:flex;
+      flex-direction:column;
       overflow:hidden;
     }
     .modal header{
@@ -877,7 +840,10 @@
       background: rgba(0,0,0,.2);
     }
     .modal header h3{margin:0;font-size:15px}
-    .modal .content{padding: 16px}
+    .modal .content{
+      padding: 16px;
+      overflow-y:auto;
+    }
     .form{display:grid; gap:10px; grid-template-columns: 1fr 1fr;}
     .form .full{grid-column: 1 / -1}
     label{font-size:12px; color: var(--muted); display:block; margin-bottom:6px}
@@ -1263,7 +1229,7 @@
             </h1>
 
             <p class="subhead">
-              Invitas a tus clientes habituales.<br/>
+              Invitas a tus clientes.<br/>
               Reservan contigo desde Telegram de forma sencilla y directa.<br/>
               Sin exposición pública. Sin fricción. Sin ruido.
             </p>
@@ -1342,6 +1308,7 @@
         </div>
 
         <p class="compare-footer">
+          <br/>
           Cuando has construido una base fiel de clientes, protegerla es más valioso que ampliarla sin filtro.
         </p>
       </div>
@@ -1800,7 +1767,22 @@
     const COOKIE_CONSENT_KEY = "agendavip-cookies";
     const GA_ID = "G-GM4DMVML5E";
 
-    // Cookie consent (GA ya se carga siempre para registrar visitas)
+    function loadGA(){
+      if (window._gaLoaded) return;
+      window._gaLoaded = true;
+      const s = document.createElement("script");
+      s.async = true;
+      s.src = "https://www.googletagmanager.com/gtag/js?id=" + GA_ID;
+      document.head.appendChild(s);
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
+      window.gtag = gtag;
+      gtag('js', new Date());
+      gtag('config', GA_ID);
+    }
+
+    // Cookie consent (carga GA solo si aceptan analíticas)
     (function initCookies(){
       const banner = document.getElementById("cookieBanner");
       const btnAccept = document.getElementById("cookieAccept");
@@ -1811,12 +1793,16 @@
         if (banner) banner.classList.remove("show");
       }
 
-      if (consent === "accepted" || consent === "rejected") {
+      if (consent === "accepted") {
+        loadGA();
         // Ya eligió, no mostrar banner
+      } else if (consent === "rejected") {
+        // No cargar GA y no mostrar banner
       } else if (banner) {
         banner.classList.add("show");
         if (btnAccept) btnAccept.addEventListener("click", ()=>{
           localStorage.setItem(COOKIE_CONSENT_KEY, "accepted");
+          loadGA();
           hide();
         });
         if (btnReject) btnReject.addEventListener("click", ()=>{
