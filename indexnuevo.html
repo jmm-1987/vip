@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgendaVIP</title>
+  <meta name="description" content="Agenda privada por invitación para peluquerías y barberías con clientela habitual." />
+  <style>
+    :root{
+      --bg:#07050a;
+      --bg-2:#0e0a14;
+      --card:#14101d;
+      --card-2:#1b1526;
+      --gold:#d8b56a;
+      --text:#f5f1e8;
+      --muted:#b9b0a1;
+      --line:rgba(216,181,106,.18);
+      --shadow:0 18px 60px rgba(0,0,0,.45);
+      --radius:22px;
+      --max:1120px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: transparent;
+      color:var(--text);
+      line-height:1.45;
+    }
+
+    /* Fondo igual que en index.html */
+    .bg{
+      position:fixed;
+      inset:0;
+      z-index:-3;
+      background:
+        radial-gradient(900px 520px at 18% 12%, rgba(124,92,255,.08), transparent 60%),
+        radial-gradient(900px 520px at 82% 18%, rgba(27,211,255,.05), transparent 62%),
+        radial-gradient(700px 500px at 0% 15%, rgba(215,179,106,.18), transparent 55%),
+        radial-gradient(650px 450px at 100% 20%, rgba(243,226,182,.14), transparent 50%),
+        radial-gradient(500px 450px at 50% 100%, rgba(215,179,106,.12), transparent 55%),
+        radial-gradient(400px 300px at 80% 80%, rgba(215,179,106,.08), transparent 45%),
+        linear-gradient(rgba(7,10,18,0.5), rgba(7,10,18,0.78)),
+        url("barber-bg.png");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      filter: saturate(.92) contrast(.96);
+      transform: translateZ(0);
+    }
+    .grain{
+      position:fixed;
+      inset:0;
+      z-index:-2;
+      pointer-events:none;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+      opacity:.05;
+      mix-blend-mode: overlay;
+      filter: contrast(120%);
+    }
+
+    h1,h2,h3{
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight:700;
+      letter-spacing:-0.02em;
+      margin:0 0 14px;
+    }
+
+    p{margin:0 0 14px;color:var(--muted)}
+    a{text-decoration:none}
+    .container{
+      width:min(calc(100% - 28px), var(--max));
+      margin:0 auto;
+    }
+
+    .nav{
+      position:sticky;
+      top:0;
+      z-index:30;
+      backdrop-filter: blur(12px);
+      background:rgba(7,5,10,.72);
+      border-bottom:1px solid var(--line);
+    }
+
+    .nav-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:14px 0;
+      gap:16px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color:var(--text);
+      font-weight:700;
+    }
+
+    .brand-mark{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:40px;
+      height:40px;
+      border-radius:12px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(215, 179, 106, 0.3);
+      backdrop-filter: blur(5px);
+      overflow:hidden;
+      box-shadow: 0 0 20px rgba(215, 179, 106, 0.1);
+    }
+    .brand-mark svg{
+      width:100%;
+      height:100%;
+      padding:6px;
+      display:block;
+    }
+
+    .brand-name{
+      font-family: Georgia, "Times New Roman", serif;
+      color:var(--gold);
+      font-size:1.25rem;
+    }
+
+    .nav-cta{
+      color:#111;
+      background:var(--gold);
+      padding:10px 14px;
+      border-radius:999px;
+      font-weight:700;
+      font-size:.95rem;
+    }
+
+    .hero{
+      min-height:92svh;
+      display:flex;
+      align-items:center;
+      overflow:hidden;
+      position:relative;
+    }
+    .hero-bg-video{
+      position:absolute;
+      inset:0;
+      z-index:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+    .hero-bg-video.hero-bg-hidden{
+      opacity:0;
+      z-index:-1;
+      pointer-events:none;
+    }
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:1;
+      background: linear-gradient(180deg, rgba(7,10,18,.25) 0%, rgba(7,10,18,.5) 50%, rgba(7,10,18,.72) 100%);
+      pointer-events:none;
+    }
+
+    .hero::before{
+      content:"";
+      position:absolute;
+      width:260px;
+      height:260px;
+      border-radius:999px;
+      background:rgba(216,181,106,.12);
+      top:8%;
+      right:-40px;
+      filter:blur(50px);
+      pointer-events:none;
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:28px;
+      padding:56px 0 30px;
+      position:relative;
+      z-index:2;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:8px 12px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      color:var(--gold);
+      background:rgba(216,181,106,.05);
+      font-size:.9rem;
+      margin-bottom:18px;
+    }
+
+    .hero h1{
+      font-size:clamp(2.2rem, 8vw, 4.5rem);
+      line-height:.98;
+      max-width:12ch;
+    }
+
+    .gold{color:var(--gold)}
+
+    .hero p.lead{
+      font-size:1.05rem;
+      max-width:36rem;
+      color:#d5cfc1;
+    }
+
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:24px;
+    }
+
+    .btn{
+      border:none;
+      cursor:pointer;
+      padding:14px 18px;
+      border-radius:999px;
+      font-weight:700;
+      font-size:1rem;
+      transition:.2s ease;
+    }
+
+    .btn-primary{
+      background:var(--gold);
+      color:#111;
+      box-shadow:var(--shadow);
+    }
+
+    .btn-secondary{
+      background:transparent;
+      color:var(--text);
+      border:1px solid var(--line);
+    }
+
+    .hero-card{
+      background:linear-gradient(180deg, rgba(27,21,38,.88), rgba(16,11,24,.92));
+      border:1px solid var(--line);
+      border-radius:30px;
+      padding:20px;
+      box-shadow:var(--shadow);
+    }
+
+    .mockup{
+      background:#0e1016;
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:28px;
+      overflow:hidden;
+      box-shadow:0 30px 60px rgba(0,0,0,.45);
+    }
+
+    .phone-top{
+      display:flex;
+      justify-content:center;
+      padding:10px 0 4px;
+      background:#10131b;
+    }
+
+    .notch{
+      width:80px;
+      height:8px;
+      border-radius:999px;
+      background:rgba(255,255,255,.18);
+    }
+
+    .screen{
+      padding:18px 14px 14px;
+      background:
+        linear-gradient(180deg, rgba(79,196,154,.12), rgba(18,28,34,.1)),
+        #10131b;
+    }
+
+    .telegram-header{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:14px;
+    }
+
+    .avatar{
+      width:34px;
+      height:34px;
+      border-radius:50%;
+      background:linear-gradient(135deg, var(--gold), #f0ddb0);
+      color:#111;
+      display:grid;
+      place-items:center;
+      font-weight:800;
+    }
+
+    .chat-bubble{
+      background:#f6f6f8;
+      color:#1b1b1d;
+      border-radius:18px 18px 18px 6px;
+      padding:14px;
+      margin-bottom:12px;
+      font-size:.94rem;
+      line-height:1.35;
+    }
+
+    .choices{
+      display:grid;
+      gap:8px;
+      margin-top:10px;
+    }
+
+    .choice{
+      background:linear-gradient(180deg, #2fe0b7, #1fc89d);
+      color:white;
+      border:none;
+      border-radius:14px;
+      padding:12px;
+      font-weight:700;
+      text-align:left;
+    }
+
+    .hero-scroll{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:8px;
+      margin-top:22px;
+      color:var(--muted);
+      font-size:.95rem;
+      width:max-content;
+    }
+
+    .arrow{
+      width:24px;
+      height:24px;
+      border-left:2px solid var(--gold);
+      border-bottom:2px solid var(--gold);
+      transform:rotate(-45deg);
+      animation:bounce 1.6s infinite;
+    }
+
+    @keyframes bounce{
+      0%,100%{transform:translateY(0) rotate(-45deg)}
+      50%{transform:translateY(8px) rotate(-45deg)}
+    }
+
+    section.story{
+      padding:48px 0;
+    }
+
+    .section-card{
+      background:linear-gradient(180deg, rgba(20,16,29,.82), rgba(13,10,18,.92));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      opacity:0;
+      transform: translateY(70px);
+      transition: opacity .85s ease, transform .85s ease;
+    }
+    .section-card.in-view{
+      opacity:1;
+      transform: translateY(0);
+    }
+
+    .story-grid{
+      display:grid;
+      grid-template-columns:1fr;
+    }
+
+    /* Narrativa por secciones: pregunta -> respuesta -> imagen */
+    section.story .story-grid .question,
+    section.story .story-grid .story-kicker,
+    section.story .story-grid .story-copy h2,
+    section.story .story-grid .story-copy p,
+    section.story .story-grid .story-copy .bullet-list,
+    section.story .story-grid .story-media{
+      opacity:0;
+      transform: translateY(10px);
+      transition: opacity .45s ease, transform .45s ease;
+    }
+    section.story .story-grid.question-visible .question{
+      opacity:1;
+      transform: translateY(0);
+    }
+    section.story .story-grid.answer-visible .story-kicker,
+    section.story .story-grid.answer-visible .story-copy h2,
+    section.story .story-grid.answer-visible .story-copy p,
+    section.story .story-grid.answer-visible .story-copy .bullet-list{
+      opacity:1;
+      transform: translateY(0);
+    }
+    section.story .story-grid.media-visible .story-media{
+      opacity:1;
+      transform: translateY(0);
+    }
+
+    .story-copy,
+    .story-media{
+      padding:24px;
+    }
+
+    .story-kicker{
+      color:var(--gold);
+      font-size:.9rem;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      margin-bottom:10px;
+      display:block;
+    }
+
+    .question{
+      display:inline-block;
+      margin-bottom:14px;
+      padding:8px 12px;
+      border:1px solid rgba(216,181,106,.22);
+      border-radius:999px;
+      background:rgba(216,181,106,.06);
+      color:var(--gold);
+      font-weight:700;
+      font-size:.95rem;
+    }
+
+    .story h2{
+      font-size:clamp(1.7rem, 5vw, 2.8rem);
+      line-height:1.03;
+      margin-bottom:12px;
+    }
+
+    .bullet-list{
+      display:grid;
+      gap:12px;
+      margin-top:18px;
+    }
+
+    .bullet{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      color:#ddd6c8;
+    }
+
+    .bullet-dot{
+      min-width:26px;
+      width:26px;
+      height:26px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      border:1px solid rgba(216,181,106,.35);
+      color:var(--gold);
+      margin-top:1px;
+      font-size:.85rem;
+    }
+
+    .media-box{
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01)),
+        var(--card-2);
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:18px;
+      min-height:320px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+    }
+    .media-asset{
+      width:100%;
+      max-width:360px;
+      border-radius:20px;
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:0 20px 45px rgba(0,0,0,.45);
+      display:block;
+      object-fit:cover;
+      background:#0f1218;
+    }
+
+    .badge{
+      position:absolute;
+      top:14px;
+      left:14px;
+      background:rgba(216,181,106,.12);
+      color:var(--gold);
+      border:1px solid var(--line);
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:.82rem;
+      font-weight:700;
+    }
+
+    .telegram-demo,
+    .panel-demo{
+      width:100%;
+      max-width:320px;
+      border-radius:28px;
+      border:1px solid rgba(255,255,255,.08);
+      background:#0f1218;
+      overflow:hidden;
+      box-shadow:0 20px 45px rgba(0,0,0,.45);
+    }
+
+    .telegram-body{
+      padding:14px;
+      background:linear-gradient(180deg, rgba(56,217,181,.08), rgba(16,18,24,.08)), #10131b;
+    }
+
+    .tg-button{
+      background:#24d3a8;
+      color:white;
+      border-radius:12px;
+      padding:12px;
+      margin-top:8px;
+      font-weight:700;
+      font-size:.95rem;
+    }
+
+    .panel-body{
+      padding:16px;
+      background:linear-gradient(180deg, rgba(216,181,106,.05), rgba(255,255,255,.01)), #10131b;
+    }
+
+    .panel-row{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      background:#161b24;
+      border:1px solid rgba(255,255,255,.05);
+      color:#f7f1e8;
+      border-radius:16px;
+      padding:12px;
+      margin-bottom:10px;
+      font-size:.95rem;
+    }
+
+    .panel-row span{color:var(--muted);display:block;font-size:.85rem}
+
+    .mini-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-top:12px;
+    }
+
+    .mini-stat{
+      background:#161b24;
+      border:1px solid rgba(255,255,255,.05);
+      border-radius:16px;
+      padding:14px;
+    }
+
+    .mini-stat strong{
+      display:block;
+      color:var(--text);
+      font-size:1.35rem;
+      margin-bottom:4px;
+    }
+
+    .subtle{
+      color:#ddd2bd;
+      font-size:.95rem;
+    }
+
+    .final-cta{
+      padding:56px 0 70px;
+    }
+
+    .cta-shell{
+      background:
+        radial-gradient(circle at top right, rgba(216,181,106,.08), transparent 28%),
+        linear-gradient(180deg, rgba(20,16,29,.95), rgba(11,9,15,.98));
+      border:1px solid var(--line);
+      border-radius:28px;
+      padding:24px;
+      box-shadow:var(--shadow);
+      opacity:0;
+      transform: translateY(70px);
+      transition: opacity .85s ease, transform .85s ease;
+    }
+    .cta-shell.in-view{
+      opacity:1;
+      transform: translateY(0);
+    }
+
+    .cta-shell h2{
+      font-size:clamp(1.9rem, 5vw, 3rem);
+      margin-bottom:10px;
+    }
+
+    .cta-grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:24px;
+      margin-top:24px;
+    }
+
+    .form{
+      display:grid;
+      gap:12px;
+    }
+
+    .input,
+    .textarea{
+      width:100%;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.08);
+      background:#11151d;
+      color:var(--text);
+      padding:15px 16px;
+      font:inherit;
+      outline:none;
+    }
+
+    .textarea{
+      min-height:120px;
+      resize:vertical;
+    }
+
+    .input:focus,
+    .textarea:focus{
+      border-color:rgba(216,181,106,.5);
+      box-shadow:0 0 0 4px rgba(216,181,106,.08);
+    }
+
+    .form-note{
+      font-size:.9rem;
+      color:var(--muted);
+    }
+
+    .success{
+      display:none;
+      margin-top:10px;
+      color:#d9c28d;
+      border:1px solid rgba(216,181,106,.22);
+      background:rgba(216,181,106,.06);
+      padding:12px 14px;
+      border-radius:14px;
+    }
+
+    /* Pricing + FAQ + Footer (como index) */
+    .pricing{
+      display:grid;
+      gap:20px;
+      grid-template-columns:1fr;
+      margin-top:20px;
+    }
+    .price{
+      border:1px solid rgba(216,181,106,.28);
+      background: linear-gradient(180deg, rgba(216,181,106,.08), rgba(255,255,255,.02));
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: 0 18px 50px rgba(216,181,106,.10);
+    }
+    .tag{
+      font-size:12px;
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      color: rgba(238,241,251,.86);
+      background: rgba(255,255,255,.03);
+      white-space:nowrap;
+    }
+    .tag.gold{
+      border-color: rgba(216,181,106,.35);
+      background: rgba(216,181,106,.12);
+      color:#fff4d2;
+    }
+    .big{
+      font-size: 42px;
+      letter-spacing:-1px;
+      margin: 6px 0 0;
+      font-weight:900;
+      color:var(--text);
+    }
+    .big span{font-size:14px;color:var(--muted);font-weight:700}
+    .price-hook{
+      font-size:13px;
+      color: rgba(52,211,153,.9);
+      margin: 6px 0 0;
+      font-weight:500;
+    }
+    ul.clean{padding-left: 18px; margin: 12px 0 0; color:var(--muted)}
+    ul.clean li{margin: 8px 0}
+    .fine{font-size:12px;color: rgba(233,236,247,.74); margin-top:12px}
+
+    .faq-grid{display:grid;gap:14px;grid-template-columns:1fr}
+    .faq .q{
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      border-radius: var(--radius);
+      padding: 14px;
+      cursor:pointer;
+      transition: .2s ease;
+    }
+    .faq .q:hover{background: rgba(255,255,255,.05)}
+    .faq .q h3{
+      margin:0;
+      font-size:15px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      color:var(--text);
+    }
+    .faq .a{max-height:0; overflow:hidden; color:var(--muted); transition:max-height .25s ease;}
+    .faq .a p{margin:10px 0 0}
+
+    footer{
+      border-top:1px solid rgba(255,255,255,.08);
+      padding: 30px 0 34px;
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 24px;
+    }
+    .footer-row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+    .footer-legal{
+      margin-top:18px;
+      padding-top:18px;
+      border-top:1px solid rgba(255,255,255,.06);
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px 18px;
+      align-items:center;
+      font-size:12px;
+    }
+    .footer-legal a,.small-links a{color:var(--muted)}
+    .footer-legal a:hover,.small-links a:hover{color:var(--text)}
+    .small-links{display:flex;gap:12px;flex-wrap:wrap}
+    .logo.logo-sm{ width: 26px; height: 26px; border-radius: 10px; }
+    .logo.logo-sm svg{ padding: 4px; width:100%; height:100%; display:block; }
+
+    @media (min-width: 860px){
+      .hero-grid{
+        grid-template-columns: 1.1fr .9fr;
+        align-items:center;
+        gap:38px;
+        padding:80px 0 40px;
+      }
+
+      .story-grid{
+        grid-template-columns:1fr 1fr;
+        align-items:center;
+      }
+
+      .story-grid.reverse .story-copy{order:2}
+      .story-grid.reverse .story-media{order:1}
+
+      .story-copy,
+      .story-media{
+        padding:34px;
+      }
+
+      .cta-grid{
+        grid-template-columns: .95fr 1.05fr;
+        align-items:start;
+      }
+      .pricing{grid-template-columns:1fr 1fr;}
+      .faq-grid{grid-template-columns:1fr 1fr;}
+    }
+    @media (prefers-reduced-motion: reduce){
+      .section-card,
+      .cta-shell{
+        opacity:1;
+        transform:none;
+        transition:none;
+      }
+      section.story .story-grid .question,
+      section.story .story-grid .story-kicker,
+      section.story .story-grid .story-copy h2,
+      section.story .story-grid .story-copy p,
+      section.story .story-grid .story-copy .bullet-list,
+      section.story .story-grid .story-media{
+        opacity:1;
+        transform:none;
+        transition:none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="#inicio" class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 15L85 35V65L50 85L15 65V35L50 15Z" stroke="url(#goldGradientNuevo)" stroke-width="6" stroke-linejoin="round"/>
+            <path d="M35 65L50 30L65 65M42 52H58" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+            <defs>
+              <linearGradient id="goldGradientNuevo" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#d7b36a" />
+                <stop offset="100%" stop-color="#f3e2b6" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="brand-name">AgendaVIP</div>
+      </a>
+      <a class="nav-cta" href="#demo">Solicita una demo</a>
+    </div>
+  </nav>
+
+  <header class="hero" id="inicio">
+    <video id="heroVideo1" class="hero-bg-video" autoplay muted playsinline aria-hidden="true">
+      <source src="fondo_mov.mp4" type="video/mp4">
+    </video>
+    <video id="heroVideo2" class="hero-bg-video hero-bg-hidden" muted playsinline aria-hidden="true">
+      <source src="Video_Unisex.mp4" type="video/mp4">
+    </video>
+    <div class="container hero-grid">
+      <div>
+        <div class="eyebrow">Agenda privada por invitación</div>
+        <h1>
+          Si tu agenda <span class="gold">no es para todos</span>,
+          AgendaVIP es la tuya.
+        </h1>
+        <p class="lead">
+          Fideliza a tus clientes mientras automatizas tu agenda.
+          Pensada para peluquerías y barberías con clientela habitual.
+        </p>
+        <div class="hero-actions">
+          <a href="#proceso" class="btn btn-primary">Descúbrela</a>
+          <a href="#demo" class="btn btn-secondary">Pedir demo</a>
+        </div>
+        <a class="hero-scroll" href="#proceso" aria-label="Bajar">
+          <span>Haz scroll</span>
+          <span class="arrow"></span>
+        </a>
+      </div>
+
+      <div class="hero-card">
+        <img src="moviltelegram.png" alt="Vista de Telegram en móvil" class="media-asset" />
+      </div>
+    </div>
+  </header>
+
+  <main id="proceso">
+    <section class="story">
+      <div class="container section-card">
+        <div class="story-grid">
+          <div class="story-copy">
+            <span class="story-kicker">01 · La idea</span>
+            <div class="question">¿Agenda privada? ¿Qué es esto?</div>
+            <h2>Una agenda pensada para tus clientes habituales.</h2>
+            <p>
+              No es una app abierta ni un marketplace.
+              Es una forma de que los clientes que tú invites puedan reservar directamente contigo.
+            </p>
+            <div class="bullet-list">
+              <div class="bullet">
+                <div class="bullet-dot">✓</div>
+                <div>Invitas a quien quieras.</div>
+              </div>
+              <div class="bullet">
+                <div class="bullet-dot">✓</div>
+                <div>Solo verán tu negocio.</div>
+              </div>
+              <div class="bullet">
+                <div class="bullet-dot">✓</div>
+                <div>No tendrás que competir con nadie.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="story-media">
+            <div class="media-box">
+              <div class="telegram-demo">
+                <div class="phone-top"><div class="notch"></div></div>
+                <div class="telegram-body">
+                  <div class="telegram-header">
+                    <div class="avatar">A</div>
+                    <div>
+                      <strong style="display:block;color:#f8f3ea">AgendaVIP</strong>
+                      <span style="color:var(--muted);font-size:.88rem">Acceso privado</span>
+                    </div>
+                  </div>
+                  <div class="chat-bubble">
+                    Hola 👋<br>
+                    Tu peluquería te ha invitado a su agenda privada.
+                  </div>
+                  <div class="tg-button">✨ Reservar mi cita</div>
+                  <div class="tg-button" style="background:#1fb893">📅 Ver mis citas</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="story">
+      <div class="container section-card">
+        <div class="story-grid reverse">
+          <div class="story-copy">
+            <span class="story-kicker">02 · Reserva</span>
+            <div class="question">¿Y cómo reservan mis clientes?</div>
+            <h2>Con solo abrir la conversación ya pueden reservar en 3 clics.</h2>
+            <p>
+              Ven tus servicios, eligen profesional si lo necesitas y seleccionan día y hora.
+              Todo dentro de Telegram.
+            </p>
+            <div class="bullet-list">
+              <div class="bullet">
+                <div class="bullet-dot">✓</div>
+                <div>Eligen profesional.</div>
+              </div>
+              <div class="bullet">
+                <div class="bullet-dot">✓</div>
+                <div>Eligen servicio.</div>
+              </div>
+              <div class="bullet">
+                <div class="bullet-dot">✓</div>
+                <div>Eligen día y hora y confirman.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="story-media">
+            <div class="media-box">
+              <video class="media-asset" autoplay muted loop playsinline controls preload="metadata">
+                <source src="videoclientes.mp4" type="video/mp4">
+                Tu navegador no soporta video.
+              </video>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="story">
+      <div class="container section-card">
+        <div class="story-grid">
+          <div class="story-copy">
+            <span class="story-kicker">03 · Disponibilidad</span>
+            <div class="question">¿Y qué ven exactamente?</div>
+            <h2>Verán tus servicios y los huecos libres de tu agenda.</h2>
+            <p>
+              Solo se muestran las opciones que realmente tienes disponibles.
+              Además, puedes activar un recordatorio automático con la antelación que quieras.
+            </p>
+            <div class="bullet-list">
+              <div class="bullet">
+                <div class="bullet-dot">✓</div>
+                <div>Servicios claros y ordenados.</div>
+              </div>
+              <div class="bullet">
+                <div class="bullet-dot">✓</div>
+                <div>Huecos reales de tu agenda.</div>
+              </div>
+              <div class="bullet">
+                <div class="bullet-dot">✓</div>
+                <div>Recordatorio automático: 3 horas, 4 horas o cuando quieras.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="story-media">
+            <div class="media-box">
+              <img src="queven.png" alt="Lo que ven los clientes en AgendaVIP" class="media-asset" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="story">
+      <div class="container section-card">
+        <div class="story-grid reverse">
+          <div class="story-copy">
+            <span class="story-kicker">04 · Tu panel</span>
+            <div class="question">¿Y yo qué veo como peluquero?</div>
+            <h2>Las reservas entran solas a tu agenda.</h2>
+            <p>
+              En tu panel ves nombre, servicio y hora.
+              También defines duración de cada servicio, precio, antelación mínima y número de profesionales.
+            </p>
+            <div class="bullet-list">
+              <div class="bullet">
+                <div class="bullet-dot">✓</div>
+                <div>Agenda unificada y actualizada automáticamente.</div>
+              </div>
+              <div class="bullet">
+                <div class="bullet-dot">✓</div>
+                <div>Control de servicios, tiempos, precios y profesionales.</div>
+              </div>
+              <div class="bullet">
+                <div class="bullet-dot">✓</div>
+                <div>Todo pensado para usarlo desde el móvil.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="story-media">
+            <div class="media-box">
+              <img src="peluquerove.png" alt="Vista del peluquero en AgendaVIP" class="media-asset" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="story">
+      <div class="container section-card">
+        <div class="story-grid">
+          <div class="story-copy">
+            <span class="story-kicker">05 · Cliente nuevo</span>
+            <div class="question">¿Y qué pasa con los clientes nuevos?</div>
+            <h2>Puedes seguir metiendo citas que entren por cualquier otra vía.</h2>
+            <p>
+              Si te entra una cita por llamada, WhatsApp o en persona,
+              la insertas manualmente y listo.
+              Tu agenda sigue siendo una sola.
+            </p>
+            <div class="bullet-list">
+              <div class="bullet">
+                <div class="bullet-dot">✓</div>
+                <div>No pierdes nada de lo que ya haces.</div>
+              </div>
+              <div class="bullet">
+                <div class="bullet-dot">✓</div>
+                <div>Todo acaba en la misma agenda.</div>
+              </div>
+              <div class="bullet">
+                <div class="bullet-dot">✓</div>
+                <div>AgendaVIP suma, no complica.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="story-media">
+            <div class="media-box">
+              <img src="citamanual.png" alt="Cita manual en AgendaVIP" class="media-asset" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="story">
+      <div class="container section-card">
+        <div class="story-grid reverse">
+          <div class="story-copy">
+            <span class="story-kicker">06 · Horarios</span>
+            <div class="question">¿Y mis horarios, descansos o festivos?</div>
+            <h2>También los controlas tú.</h2>
+            <p>
+              Marca tus horarios, descansos, festivos y días cerrados
+              para que solo se muestren huecos reales y no tengas sorpresas.
+            </p>
+            <div class="bullet-list">
+              <div class="bullet">
+                <div class="bullet-dot">✓</div>
+                <div>Horarios por profesional.</div>
+              </div>
+              <div class="bullet">
+                <div class="bullet-dot">✓</div>
+                <div>Festivos y cierres especiales.</div>
+              </div>
+              <div class="bullet">
+                <div class="bullet-dot">✓</div>
+                <div>Disponibilidad siempre bajo tu control.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="story-media">
+            <div class="media-box">
+              <img src="festivos.png" alt="Configuración de horarios y festivos" class="media-asset" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="story" id="precios">
+      <div class="container section-card">
+        <div class="story-copy" style="padding-bottom:10px;">
+          <span class="story-kicker">Acceso</span>
+          <h2>Planes de AgendaVIP</h2>
+          <p>Un servicio personal: te acompañamos en la configuración y puesta en marcha.</p>
+        </div>
+        <div class="story-copy" style="padding-top:0;">
+          <div class="pricing">
+            <div class="price">
+              <div class="tag gold" style="display:inline-flex;gap:8px;align-items:center;margin-bottom:10px">Plan Pro</div>
+              <h3 style="margin:0 0 6px;font-size:16px;color:var(--text)">Agenda privada + Telegram</h3>
+              <div class="big">19€ <span>/ mes</span></div>
+              <p class="price-hook">Menos de 1€ al día · Prueba gratuita 15 días</p>
+              <ul class="clean">
+                <li>Invitaciones por enlace privado</li>
+                <li>Reservas en Telegram</li>
+                <li>Panel: agenda + clientes + servicios</li>
+                <li>Gestión de clientes con visitas recurrentes</li>
+                <li>Reglas y recordatorios</li>
+              </ul>
+              <p class="fine" style="margin-top:8px">+5€/mes por profesional adicional.</p>
+              <p class="fine">Cancela cuando quieras. Sin permanencia.</p>
+            </div>
+
+            <div class="price">
+              <div class="tag gold" style="display:inline-flex;gap:8px;align-items:center;margin-bottom:10px">Plan Pro + Web</div>
+              <h3 style="margin:0 0 6px;font-size:16px;color:var(--text)">Todo lo anterior + página corporativa</h3>
+              <div class="big">25€ <span>/ mes</span></div>
+              <p class="price-hook">Todo incluido · Prueba gratuita 15 días</p>
+              <ul class="clean">
+                <li>Todo lo del Plan Pro</li>
+                <li>Página web corporativa incluida</li>
+                <li>Diseño adaptado a tu marca</li>
+                <li>Dominio y hosting gestionados</li>
+              </ul>
+              <p class="fine" style="margin-top:8px">+5€/mes por profesional adicional.</p>
+              <p class="fine">Te acompañamos para que tu web refleje tu estilo. Cancela cuando quieras.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="story faq" id="faq">
+      <div class="container section-card">
+        <div class="story-copy">
+          <span class="story-kicker">FAQ</span>
+          <h2>Preguntas frecuentes</h2>
+          <p>Respuestas rápidas sobre cómo funciona AgendaVIP.</p>
+        </div>
+        <div class="story-copy" style="padding-top:0;">
+          <div class="faq-grid">
+            <div class="q" role="button" tabindex="0" aria-expanded="false">
+              <h3>¿El cliente necesita instalar algo? <span aria-hidden="true">+</span></h3>
+              <div class="a"><p>Solo Telegram. No hay app adicional ni creación de cuentas.</p></div>
+            </div>
+            <div class="q" role="button" tabindex="0" aria-expanded="false">
+              <h3>¿Puedo controlar horarios y servicios? <span aria-hidden="true">+</span></h3>
+              <div class="a"><p>Sí. Definirás servicios, duración, horarios, antelación y ventana de reservas.</p></div>
+            </div>
+            <div class="q" role="button" tabindex="0" aria-expanded="false">
+              <h3>¿Sirve para equipos? <span aria-hidden="true">+</span></h3>
+              <div class="a"><p>Sí. Puedes gestionarlo por profesional y por servicio.</p></div>
+            </div>
+            <div class="q" role="button" tabindex="0" aria-expanded="false">
+              <h3>¿Hay permanencia? <span aria-hidden="true">+</span></h3>
+              <div class="a"><p>No. Puedes cancelar cuando quieras, sin permanencia.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="final-cta" id="demo">
+      <div class="container cta-shell">
+        <h2>Solicita una demo.</h2>
+        <p>
+          Te enseñamos cómo quedaría AgendaVIP en tu peluquería o barbería.
+        </p>
+
+        <div class="cta-grid">
+          <div>
+            <div class="bullet-list">
+              <div class="bullet">
+                <div class="bullet-dot">✓</div>
+                <div>Demo adaptada a tu negocio.</div>
+              </div>
+              <div class="bullet">
+                <div class="bullet-dot">✓</div>
+                <div>Te explicamos el flujo completo en pocos minutos.</div>
+              </div>
+              <div class="bullet">
+                <div class="bullet-dot">✓</div>
+                <div>Perfecto si trabajas principalmente con clientes habituales.</div>
+              </div>
+            </div>
+          </div>
+
+          <form class="form" id="demoForm">
+            <input class="input" type="text" name="negocio" placeholder="Nombre de tu peluquería o barbería" required>
+            <input class="input" type="text" name="nombre" placeholder="Tu nombre" required>
+            <input class="input" type="email" name="email" placeholder="Email" required>
+            <input class="input" type="tel" name="telefono" placeholder="Teléfono o WhatsApp">
+            <textarea class="textarea" name="mensaje" placeholder="Cuéntanos cómo reservas ahora mismo"></textarea>
+            <button class="btn btn-primary" type="submit">Solicitar demo</button>
+            <div class="form-note">Puedes conectar este formulario con email, WhatsApp o tu CRM más adelante.</div>
+            <div class="success" id="successMessage">
+              Gracias. Hemos recibido tu solicitud de demo.
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-row">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="brand-mark logo logo-sm" aria-hidden="true">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M50 15L85 35V65L50 85L15 65V35L50 15Z" stroke="url(#goldGradientFooterNuevo)" stroke-width="6" stroke-linejoin="round"/>
+              <path d="M35 65L50 30L65 65M42 52H58" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+              <defs>
+                <linearGradient id="goldGradientFooterNuevo" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#d7b36a" />
+                  <stop offset="100%" stop-color="#f3e2b6" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <div>
+            <div style="color:var(--text);font-weight:700">AgendaVIP</div>
+            <div style="font-size:12px">© <span id="year"></span></div>
+          </div>
+        </div>
+        <div class="small-links">
+          <a href="#proceso">Cómo funciona</a>
+          <a href="#precios">Precios</a>
+          <a href="#faq">FAQ</a>
+        </div>
+      </div>
+      <div class="footer-legal">
+        <a href="aviso-legal.html">Aviso legal</a>
+        <a href="politica-privacidad.html">Política de privacidad</a>
+        <a href="politica-cookies.html">Política de cookies</a>
+        <span style="color:var(--muted)">·</span>
+        <a href="mailto:contacto@agendavip.es">contacto@agendavip.es</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
+    const form = document.getElementById('demoForm');
+    const success = document.getElementById('successMessage');
+    const v1 = document.getElementById('heroVideo1');
+    const v2 = document.getElementById('heroVideo2');
+    const EMAILJS_PUBLIC_KEY = "topNg38j9LTlBzeSQ";
+    const EMAILJS_SERVICE = "service_p8clbak";
+    const EMAILJS_TEMPLATE = "template_8dl1y4o";
+
+    if (v1 && v2) {
+      v1.addEventListener('ended', () => {
+        v1.classList.add('hero-bg-hidden');
+        v2.classList.remove('hero-bg-hidden');
+        v2.currentTime = 0;
+        v2.play();
+      });
+      v2.addEventListener('ended', () => {
+        v2.classList.add('hero-bg-hidden');
+        v1.classList.remove('hero-bg-hidden');
+        v1.currentTime = 0;
+        v1.play();
+      });
+    }
+
+    // Historia por sección: pregunta, respuesta y luego imagen
+    const storyGrids = Array.from(document.querySelectorAll('section.story .story-grid'));
+    const storyObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const grid = entry.target;
+        if (grid.dataset.played === '1') return;
+
+        grid.dataset.played = '1';
+        grid.classList.add('question-visible');
+        setTimeout(() => grid.classList.add('answer-visible'), 1000);
+        setTimeout(() => grid.classList.add('media-visible'), 2000);
+        storyObserver.unobserve(grid);
+      });
+    }, { threshold: 0.35 });
+
+    storyGrids.forEach((grid) => storyObserver.observe(grid));
+
+    // Animación de entrada de bloques (como en index)
+    const revealBlocks = Array.from(document.querySelectorAll('.section-card, .cta-shell'));
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('in-view');
+        revealObserver.unobserve(entry.target);
+      });
+    }, { threshold: 0.18 });
+    revealBlocks.forEach((el) => revealObserver.observe(el));
+
+    // FAQ accordion
+    document.querySelectorAll(".faq .q").forEach((item) => {
+      const answer = item.querySelector(".a");
+      const toggle = () => {
+        const expanded = item.getAttribute("aria-expanded") === "true";
+        item.setAttribute("aria-expanded", expanded ? "false" : "true");
+        if (answer) answer.style.maxHeight = expanded ? "0px" : (answer.scrollHeight + 14) + "px";
+        const sign = item.querySelector("h3 span");
+        if (sign) sign.textContent = expanded ? "+" : "–";
+      };
+      item.addEventListener("click", toggle);
+      item.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          toggle();
+        }
+      });
+    });
+
+    if (typeof emailjs !== "undefined") emailjs.init(EMAILJS_PUBLIC_KEY);
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const originalText = submitBtn ? submitBtn.textContent : "";
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Enviando...";
+      }
+
+      success.style.display = 'none';
+      success.style.color = '#d9c28d';
+      success.style.borderColor = 'rgba(216,181,106,.22)';
+      success.style.background = 'rgba(216,181,106,.06)';
+
+      if (typeof emailjs === "undefined") {
+        success.textContent = "Error: no se pudo cargar el envío. Escríbenos por WhatsApp.";
+        success.style.display = 'block';
+        success.style.color = '#ffd3d3';
+        success.style.borderColor = 'rgba(248,113,113,.35)';
+        success.style.background = 'rgba(248,113,113,.08)';
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+        }
+        return;
+      }
+
+      const data = Object.fromEntries(new FormData(form).entries());
+      const proceso = [
+        "WhatsApp/Teléfono: " + (data.telefono || "-"),
+        data.mensaje ? "Mensaje: " + data.mensaje : ""
+      ].filter(Boolean).join("\n\n");
+
+      const templateParams = {
+        nombre: (data.nombre || "").trim(),
+        empresa: (data.negocio || "-").trim(),
+        email: (data.email || "").trim(),
+        proceso: proceso
+      };
+
+      try {
+        await emailjs.send(EMAILJS_SERVICE, EMAILJS_TEMPLATE, templateParams, {
+          publicKey: EMAILJS_PUBLIC_KEY
+        });
+        success.textContent = "Gracias. Hemos recibido tu solicitud de demo.";
+        success.style.display = 'block';
+        form.reset();
+        success.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } catch (err) {
+        console.error("EmailJS error:", err);
+        success.textContent = "No se pudo enviar ahora. Escríbenos por WhatsApp.";
+        success.style.display = 'block';
+        success.style.color = '#ffd3d3';
+        success.style.borderColor = 'rgba(248,113,113,.35)';
+        success.style.background = 'rgba(248,113,113,.08)';
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+        }
+      }
+    });
+
+    const yearEl = document.getElementById("year");
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
