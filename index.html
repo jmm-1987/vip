@@ -882,7 +882,7 @@
         </div>
         <div class="brand-name">AgendaVIP</div>
       </a>
-      <a class="nav-cta" href="#demo">Solicita una demo</a>
+      <a class="nav-cta" href="#demo">Solicitar demo</a>
     </div>
   </nav>
 
@@ -1212,23 +1212,23 @@
 
     <section class="final-cta" id="demo">
       <div class="container cta-shell">
-        <h2>Pruébalo en tu peluquería.</h2>
-        <p>Te enseñamos cómo quedaría AgendaVIP en tu negocio.</p>
+        <h2>Lista de espera para la demo.</h2>
+        <p>Estamos preparando nuevas demos. Únete a la lista de espera y te avisamos cuando esté disponible para tu negocio.</p>
 
         <div class="cta-grid">
           <div>
             <div class="bullet-list">
               <div class="bullet">
                 <div class="bullet-dot">✓</div>
-                <div>Demo adaptada a tu agenda.</div>
+                <div>Demo aún no publicada.</div>
               </div>
               <div class="bullet">
                 <div class="bullet-dot">✓</div>
-                <div>Reservas por invitación desde Telegram.</div>
+                <div>Instalamos una demo en tu negocio en menos de 15 días.</div>
               </div>
               <div class="bullet">
                 <div class="bullet-dot">✓</div>
-                <div>Te diremos si encaja contigo.</div>
+                <div>La pruebas durante un mes y tú decides.</div>
               </div>
             </div>
           </div>
@@ -1240,9 +1240,9 @@
             <input class="input" type="tel" name="telefono" placeholder="WhatsApp o teléfono">
             <textarea class="textarea" name="mensaje" placeholder="Cuéntanos tu caso (clientes habituales + horarios)"></textarea>
             <button class="btn btn-primary" type="submit">Solicitar demo</button>
-            <div class="form-note">Te respondemos para coordinar tu demo.</div>
+            <div class="form-note">Déjanos tus datos y te avisamos cuando la demo esté disponible.</div>
             <div class="success" id="successMessage">
-              Gracias. Hemos recibido tu solicitud de demo.
+              Gracias. Hemos recibido tu solicitud para la lista de espera.
             </div>
           </form>
         </div>
@@ -1414,7 +1414,7 @@
         await emailjs.send(EMAILJS_SERVICE, EMAILJS_TEMPLATE, templateParams, {
           publicKey: EMAILJS_PUBLIC_KEY
         });
-        success.textContent = "Gracias. Hemos recibido tu solicitud de demo.";
+        success.textContent = "Gracias. Hemos recibido tu solicitud para la lista de espera.";
         success.style.display = 'block';
         form.reset();
         success.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
