@@ -1,0 +1,2051 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <title>AgendaVIP | Agenda privada por invitación en Telegram para peluquerías</title>
+  <meta name="description" content="Agenda VIP exclusiva para peluquerías, barberías y salones. Invita a tus clientes habituales, reservan desde Telegram en 3 clics. Sin apps, sin listas de espera. Prueba gratuita 15 días." />
+  <meta name="keywords" content="agenda peluquería, reservas Telegram, agenda VIP, barbería, salón belleza, citas online, agenda privada, fidelización clientes" />
+  <meta name="author" content="AgendaVIP" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#070a12" />
+  <!-- Actualiza las URLs cuando tengas el dominio definitivo -->
+  <link rel="canonical" href="https://agendavip.es/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="AgendaVIP | Agenda privada por invitación en Telegram" />
+  <meta property="og:description" content="Agenda VIP para peluquerías y barberías. Tus clientes habituales reservan desde Telegram. Sin apps ni listas de espera. Prueba gratuita." />
+  <meta property="og:url" content="https://agendavip.es/" />
+  <meta property="og:image" content="https://agendavip.es/panel.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="es_ES" />
+  <meta property="og:site_name" content="AgendaVIP" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AgendaVIP | Agenda privada por invitación en Telegram" />
+  <meta name="twitter:description" content="Agenda VIP para peluquerías. Reservas en Telegram, sin apps. Prueba gratuita 15 días." />
+  <meta name="twitter:image" content="https://agendavip.es/panel.png" />
+
+  <!-- Tipos (opcional). Si prefieres 100% local, bórralo. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#070a12;
+      --text:#eef1fb;
+      --muted:#a9b1d6;
+
+      --gold:#d7b36a;
+      --gold2:#f3e2b6;
+
+      --ok:#34d399;
+      --line:rgba(255,255,255,.085);
+
+      --shadow: 0 22px 70px rgba(0,0,0,.62);
+      --radius: 18px;
+      --radius2: 26px;
+      --max: 1120px;
+
+      --sans: "Inter", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      --serif: "Fraunces", ui-serif, Georgia, "Times New Roman", Times, serif;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%; overflow-x:hidden}
+    html{ width:100%; max-width:100vw; -webkit-overflow-scrolling:touch }
+    body{
+      margin:0;
+      width:100%;
+      max-width:100vw;
+      font-family:var(--sans);
+      color:var(--text);
+      background: var(--bg);
+      line-height:1.45;
+      letter-spacing:-0.1px;
+    }
+    a{color:inherit;text-decoration:none}
+    main{width:100%; min-width:0}
+    .container{max-width:var(--max);margin:0 auto;padding:0 24px; width:100%}
+
+    /* BACKGROUND GLOBAL */
+    .bg{
+      position:fixed;
+      inset:0;
+      z-index:-3;
+      background:
+        radial-gradient(900px 520px at 18% 12%, rgba(124,92,255,.08), transparent 60%),
+        radial-gradient(900px 520px at 82% 18%, rgba(27,211,255,.05), transparent 62%),
+        radial-gradient(700px 500px at 0% 15%, rgba(215,179,106,.18), transparent 55%),
+        radial-gradient(650px 450px at 100% 20%, rgba(243,226,182,.14), transparent 50%),
+        radial-gradient(500px 450px at 50% 100%, rgba(215,179,106,.12), transparent 55%),
+        radial-gradient(400px 300px at 80% 80%, rgba(215,179,106,.08), transparent 45%),
+        linear-gradient(rgba(7,10,18,0.5), rgba(7,10,18,0.78)),
+        url("barber-bg.png");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      filter: saturate(.92) contrast(.96);
+      transform: translateZ(0);
+    }
+    .grain{
+      position:fixed; inset:0; z-index:-2;
+      pointer-events:none;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+      opacity:.05;
+      mix-blend-mode: overlay;
+      filter: contrast(120%);
+    }
+
+    /* NAV */
+    .nav{
+      position:sticky; top:0; z-index:50;
+      background: linear-gradient(to bottom, rgba(7,10,18,.96), rgba(7,10,18,.88));
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--line);
+      box-shadow: 0 1px 0 rgba(215,179,106,.06);
+    }
+    .nav-inner{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:14px 0;
+      gap:14px;
+    }
+    .brand{
+      display:flex;align-items:center;gap:10px;
+      font-weight:700;
+      letter-spacing:.2px;
+    }
+    .logo{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.03) !important;
+      border: 1px solid rgba(215, 179, 106, 0.3) !important;
+      backdrop-filter: blur(5px);
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(215, 179, 106, 0.1);
+    }
+    .logo svg{ width: 100%; height: 100%; padding: 6px; display: block; }
+    .logo:after{ display: none; }
+    .logo.logo-sm{ width: 26px; height: 26px; border-radius: 10px; }
+    .logo.logo-sm svg{ padding: 4px; }
+
+    .nav-menu{display:flex;align-items:center;gap:14px}
+    .nav-links{display:flex;align-items:center;gap:14px}
+    .nav-links a{
+      color:var(--muted);
+      font-size:14px;
+      padding:8px 10px;
+      border-radius:12px;
+      transition: .2s ease;
+    }
+    .nav-links a:hover{color:var(--text);background:rgba(255,255,255,.06)}
+    .nav-cta{display:flex;align-items:center;gap:10px}
+    .nav-hamburger{
+      display:none;
+      flex-direction:column;
+      justify-content:center;
+      gap:5px;
+      width:40px; height:40px;
+      padding:8px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.06);
+      border-radius:12px;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+    .nav-hamburger:hover{background:rgba(255,255,255,.09)}
+    .nav-hamburger span{
+      display:block;
+      width:100%;
+      height:2px;
+      background:var(--text);
+      border-radius:1px;
+      transition:.25s ease;
+    }
+    .nav-hamburger[aria-expanded="true"] span:nth-child(1){ transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger[aria-expanded="true"] span:nth-child(2){ opacity:0; }
+    .nav-hamburger[aria-expanded="true"] span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
+    .nav-backdrop{display:none}
+    .nav-close-btn{display:none}
+
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:14px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      font-weight:650;
+      font-size:14px;
+      cursor:pointer;
+      transition: .2s ease;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .btn:hover{transform:translateY(-1px); background: rgba(255,255,255,.09)}
+    .btn.primary{
+      border: 1px solid rgba(215,179,106,.4);
+      background: linear-gradient(135deg, rgba(215,179,106,.95), rgba(243,226,182,.7));
+      box-shadow: 0 20px 44px rgba(215,179,106,.18), 0 0 0 1px rgba(255,255,255,.1) inset;
+      color:#0a0d14;
+      font-weight: 700;
+    }
+    .btn.primary:hover{
+      filter: brightness(1.08);
+      box-shadow: 0 22px 48px rgba(215,179,106,.22), 0 0 0 1px rgba(255,255,255,.12) inset;
+    }
+    .btn.ghost{background:transparent}
+
+    /* HERO */
+    .hero{
+      position: relative;
+      min-height: 88vh;
+      display: flex;
+      align-items: center;
+      padding: 80px 0 60px;
+      overflow: hidden;
+    }
+    .hero-bg-video{
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity .4s ease;
+    }
+    .hero-bg-video.hero-bg-hidden{ opacity: 0; z-index: -1; pointer-events: none; }
+    .hero::before{
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(180deg, rgba(7,10,18,.25) 0%, rgba(7,10,18,.5) 50%, rgba(7,10,18,.72) 100%);
+      filter: saturate(1.08) contrast(1);
+    }
+    .hero .container{ position: relative; z-index: 2; width: 100%; margin-top: -24px; }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 48px;
+      align-items: center;
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+
+    .badge{
+      display:inline-flex;align-items:center;gap:10px;
+      font-size:12px;
+      font-weight:500;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+      color: rgba(243,226,182,.92);
+      border:1px solid rgba(215,179,106,.25);
+      background: rgba(215,179,106,.06);
+      padding:10px 16px;
+      border-radius:999px;
+      width:fit-content;
+    }
+    .badge .dot{
+      width:8px;height:8px;border-radius:99px;background:var(--gold);
+      box-shadow: 0 0 0 6px rgba(215,179,106,.12), 0 0 12px rgba(215,179,106,.18);
+    }
+
+    h1{
+      margin:20px 0 14px;
+      font-family:var(--serif);
+      font-size: clamp(36px, 4.6vw, 58px);
+      line-height:1.05;
+      letter-spacing:-1.2px;
+      font-weight: 600;
+    }
+    .subhead{
+      color: rgba(238,241,251,.84);
+      font-size: clamp(16px, 1.6vw, 19px);
+      max-width: 52ch;
+      margin: 0 0 24px;
+      line-height: 1.5;
+    }
+    .subhead.subhead-refuerzo{
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 56ch;
+      margin-top: 6px;
+    }
+    .cta-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top: 10px;}
+
+    .microtrust{
+      display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;
+      color:rgba(238,241,251,.76);
+      font-size:13px;
+    }
+    .microtrust .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 10px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+    }
+
+    /* Hero: contenedor de video en portada */
+    .hero-video-wrap{
+      position:relative;
+      border-radius:var(--radius2);
+      overflow:hidden;
+      background: rgba(4,7,14,.6);
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow: 0 24px 64px rgba(0,0,0,.4), 0 0 0 1px rgba(255,255,255,.04) inset;
+      aspect-ratio: 16/9;
+      min-height: 280px;
+    }
+    .hero-video-wrap::before{
+      content:"";
+      position:absolute; inset:-2px;
+      border-radius: inherit;
+      background: radial-gradient(600px 260px at 40% 0%, rgba(215,179,106,.08), transparent 55%);
+      pointer-events:none;
+    }
+    .hero-video-main{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    @media (max-width: 940px){
+      .hero-video-wrap{ min-height: 220px; aspect-ratio: 16/9; }
+    }
+
+    /* PANELS */
+    .panel{
+      background: linear-gradient(165deg, rgba(255,255,255,.05), rgba(255,255,255,.015));
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: var(--radius2);
+      box-shadow: 0 24px 64px rgba(0,0,0,.35), 0 0 0 1px rgba(255,255,255,.03) inset;
+      overflow:hidden;
+      position:relative;
+    }
+    .panel:before{
+      content:"";
+      position:absolute; inset:-2px;
+      border-radius: inherit;
+      background: radial-gradient(600px 260px at 40% 0%, rgba(215,179,106,.10), transparent 55%),
+                  radial-gradient(600px 240px at 80% 40%, rgba(124,92,255,.06), transparent 55%);
+      pointer-events:none;
+    }
+    .panel-inner{position:relative;padding:16px}
+
+    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom: 12px;}
+    .tab{
+      padding:8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      color: rgba(169,177,214,.92);
+      background: rgba(255,255,255,.02);
+      font-size: 13px;
+      cursor:pointer;
+      transition: .2s ease;
+    }
+    .tab.active{
+      background: rgba(215,179,106,.14);
+      border-color: rgba(215,179,106,.26);
+      color: var(--text);
+    }
+
+    .demo{display:grid;grid-template-columns: 1fr;gap: 12px;}
+    .card{
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(6,10,18,.35);
+      border-radius: var(--radius);
+      padding: 14px;
+    }
+    .card h3{margin:0 0 8px;font-size:14px;letter-spacing:.2px;color: var(--text);}
+
+    .row{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:10px;
+      padding:10px 10px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      margin-top:8px;
+    }
+    .row small{color:rgba(169,177,214,.92)}
+    .tag{
+      font-size:12px;
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      color: rgba(238,241,251,.86);
+      background: rgba(255,255,255,.03);
+      white-space:nowrap;
+    }
+    .tag.gold{border-color: rgba(215,179,106,.28); background: rgba(215,179,106,.10); color:#fff4d2}
+    .tag.ok{border-color: rgba(52,211,153,.28); background: rgba(52,211,153,.10); color:#c8ffe6}
+
+    /* SECTIONS */
+    .section{padding: 72px 0;}
+
+    /* Comparativa sistemas abiertos vs AgendaVIP */
+    .section-compare{
+      position: relative;
+      z-index: 8;
+      margin-top: -48px;
+      padding-top: 96px;
+      padding-bottom: 72px;
+      background: radial-gradient(700px 360px at 15% 0%, rgba(215,179,106,.12), transparent 55%),
+                  radial-gradient(700px 360px at 85% 0%, rgba(124,92,255,.10), transparent 55%),
+                  linear-gradient(180deg, rgba(7,10,18,.96), rgba(7,10,18,.96));
+      box-shadow: 0 -8px 48px rgba(0,0,0,.5);
+      border-radius: 32px 32px 0 0;
+    }
+    .section-compare h2{
+      margin: 0 0 10px;
+      font-family: var(--serif);
+      font-size: clamp(24px, 2.6vw, 34px);
+      letter-spacing: -.6px;
+      font-weight: 600;
+    }
+    .compare-layout{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 24px;
+      margin-top: 26px;
+    }
+    .compare-column h3{
+      margin: 0 0 10px;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      color: var(--muted);
+    }
+    .compare-column-vip h3{
+      color: rgba(243,226,182,.9);
+    }
+    .compare-list{
+      list-style:none;
+      margin:0;
+      padding:0;
+    }
+    .compare-item{
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.04);
+      background: rgba(255,255,255,.02);
+      color: rgba(238,241,251,.9);
+      font-size: 14px;
+      margin-bottom: 8px;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity .45s ease, transform .45s ease, border-color .2s ease, background .2s ease;
+    }
+    .compare-item.is-visible{
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .compare-item-open{
+      border-left: 2px solid rgba(248,113,113,.6);
+    }
+    .compare-item-vip{
+      border-left: 2px solid rgba(52,211,153,.7);
+    }
+    .compare-footer{
+      margin-top: 28px;
+      font-size: 20px;
+      color: rgba(243,226,182,.9);
+      font-family: var(--serif);
+      letter-spacing: -.4px;
+      text-align: center;
+    }
+    @media (max-width: 820px){
+      .section-compare{
+        margin-top: -36px;
+        padding-top: 80px;
+      }
+      .compare-layout{
+        grid-template-columns: minmax(0,1fr);
+        gap: 14px;
+      }
+    }
+
+    /* Cómo funciona — entra por encima de la portada al hacer scroll */
+    #como-funciona{
+      position: relative;
+      z-index: 10;
+      margin-top: -60px;
+      padding-top: 100px;
+      padding-bottom: 72px;
+      background: linear-gradient(180deg, rgba(7,10,18,.7) 0%, var(--bg) 100%);
+      border-radius: 32px 32px 0 0;
+      box-shadow: 0 -8px 48px rgba(0,0,0,.4);
+      opacity: 0;
+      transform: translateY(80px);
+      transition: opacity .9s ease, transform .9s ease;
+    }
+    #como-funciona.in-view{
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .section h2{
+      margin: 0 0 14px;
+      font-family:var(--serif);
+      font-size: clamp(24px, 2.6vw, 38px);
+      letter-spacing: -.6px;
+      font-weight: 600;
+    }
+    .section p{color:var(--muted); margin:0 0 28px; font-size: 1.02rem; line-height: 1.55;}
+
+    .section.section-bg-espera{
+      position: relative;
+      overflow: hidden;
+    }
+    .section.section-bg-espera::before{
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background:
+        linear-gradient(180deg, rgba(7,10,18,.45) 0%, rgba(7,10,18,.68) 100%),
+        url("fondo_espera.png") center / cover no-repeat;
+    }
+    .section.section-bg-espera::after{
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(500px 350px at 10% 20%, rgba(215,179,106,.1), transparent 45%),
+        radial-gradient(450px 300px at 90% 30%, rgba(243,226,182,.08), transparent 40%);
+    }
+    .section.section-bg-espera .container{ position: relative; z-index: 1; }
+    .section.section-bg-espera .feature{
+      background: rgba(4,7,14,.45);
+      border-color: rgba(255,255,255,.06);
+      box-shadow: 0 8px 32px rgba(0,0,0,.4);
+    }
+    .section.section-bg-espera .feature:hover{
+      background: rgba(5,8,16,.55);
+      border-color: rgba(215,179,106,.2);
+    }
+    .section.section-bg-espera .panel{
+      background: rgba(4,7,14,.48);
+      border-color: rgba(255,255,255,.08);
+      box-shadow: 0 12px 40px rgba(0,0,0,.45);
+    }
+    .section.section-bg-espera .card{
+      background: rgba(3,6,12,.4);
+      border-color: rgba(255,255,255,.06);
+    }
+    .section.section-bg-espera .row{
+      background: rgba(0,0,0,.15);
+    }
+
+    .grid-3{display:grid;gap:24px;grid-template-columns: repeat(3, 1fr);}
+    .grid-2{display:grid;gap:24px;grid-template-columns: repeat(2, 1fr);}
+
+    /* Gestiona tus citas — selector + fondo animado sutil */
+    .panel-selector-wrap{
+      position: relative;
+      padding: 72px 0 60px;
+      overflow: hidden;
+    }
+    .panel-selector-bg{
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: .45;
+      background-image:
+        linear-gradient(90deg, rgba(215,179,106,.3) 1px, transparent 1px),
+        linear-gradient(rgba(215,179,106,.3) 1px, transparent 1px);
+      background-size: 48px 48px;
+      animation: gridShift 15s linear infinite;
+    }
+    .panel-selector-bg::before{
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(45deg, transparent 49%, rgba(124,92,255,.2) 49%, rgba(124,92,255,.2) 51%, transparent 51%);
+      background-size: 32px 32px;
+      animation: gridShiftDiag 18s linear infinite reverse;
+    }
+    @keyframes gridShift{
+      0%{ background-position: 0 0; }
+      100%{ background-position: 48px 48px; }
+    }
+    @keyframes gridShiftDiag{
+      0%{ background-position: 0 0; }
+      100%{ background-position: 32px 32px; }
+    }
+    .panel-selector-intro{
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .panel-selector-intro h2{
+      font-family: var(--serif);
+      font-size: clamp(28px, 3.5vw, 42px);
+      letter-spacing: -.5px;
+      margin: 0 0 8px;
+    }
+    .panel-selector-tabs{
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 36px;
+      flex-wrap: wrap;
+    }
+    .panel-selector-tabs button{
+      padding: 12px 24px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+    .panel-selector-tabs button:hover{
+      color: var(--text);
+      background: rgba(255,255,255,.08);
+    }
+    .panel-selector-tabs button.active{
+      border-color: rgba(215,179,106,.4);
+      background: rgba(215,179,106,.12);
+      color: #fff4d2;
+    }
+    .panel-selector-content{ text-align: center; overflow-x: hidden; }
+    .panel-selector-content img{
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+    .panel-selector-wrap .container{ position: relative; z-index: 1; }
+    .panel-selector-content [data-panel="movil"] img{ max-width: 260px; }
+    .panel-selector-content [data-panel="web"] img{ max-width: 900px; width: 100%; }
+    .panel-selector-content [data-panel]{ display: none; }
+    .panel-selector-content [data-panel].active{ display: block; }
+
+    .feature{
+      border:1px solid rgba(255,255,255,.08);
+      background: linear-gradient(160deg, rgba(255,255,255,.035), rgba(255,255,255,.01));
+      border-radius: var(--radius2);
+      padding: 22px;
+      min-height: 150px;
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+    #como-funciona .feature{
+      opacity: 0;
+      transform: translateX(-48px);
+      animation: slideInLeft 1.1s ease forwards;
+      animation-play-state: paused;
+    }
+    #como-funciona .feature:nth-child(1){ animation-delay: 0s; }
+    #como-funciona .feature:nth-child(2){ animation-delay: .45s; }
+    #como-funciona .feature:nth-child(3){ animation-delay: .9s; }
+    #como-funciona.in-view .feature{ animation-play-state: running; }
+    @keyframes slideInLeft{
+      to{ opacity: 1; transform: translateX(0); }
+    }
+    .feature:hover{
+      border-color: rgba(215,179,106,.18);
+      box-shadow: 0 12px 40px rgba(0,0,0,.25);
+    }
+    .feature .icon{
+      width:44px;height:44px;border-radius:14px;
+      background: linear-gradient(135deg, rgba(215,179,106,.15), rgba(215,179,106,.08));
+      border:1px solid rgba(215,179,106,.25);
+      display:flex;align-items:center;justify-content:center;
+      margin-bottom: 14px;
+    }
+    .feature h3{margin:0 0 6px;font-size:15px}
+    .feature p{margin:0;color:var(--muted);font-size:14px}
+
+    .feature-invita{
+      position: relative;
+      overflow: hidden;
+      background: transparent;
+    }
+    .feature-invita::before{
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(7,10,18,.45) 0%, rgba(7,10,18,.65) 100%), url("invita.png") center / cover no-repeat;
+      z-index: 0;
+    }
+    .feature-invita > *{ position: relative; z-index: 1; }
+
+    .feature-reserva{
+      position: relative;
+      overflow: hidden;
+      background: transparent;
+    }
+    .feature-reserva::before{
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(7,10,18,.45) 0%, rgba(7,10,18,.65) 100%), url("reserva.png") center / cover no-repeat;
+      z-index: 0;
+    }
+    .feature-reserva > *{ position: relative; z-index: 1; }
+
+    .feature-controlas{
+      position: relative;
+      overflow: hidden;
+      background: transparent;
+    }
+    .feature-controlas::before{
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(7,10,18,.45) 0%, rgba(7,10,18,.65) 100%), url("controlas.png") center / cover no-repeat;
+      z-index: 0;
+    }
+    .feature-controlas > *{ position: relative; z-index: 1; }
+
+    .divider{
+      border-top: 1px solid rgba(255,255,255,.06);
+      margin: 32px 0;
+      position: relative;
+    }
+    .divider::after{
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: -1px;
+      width: 80px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(215,179,106,.30), transparent);
+      transform: translateX(-50%);
+    }
+
+    /* Pricing */
+    .pricing{display:grid;gap:24px;grid-template-columns: 1fr 1fr;align-items:stretch;}
+    .pricing .panel{grid-column: 1 / -1;}
+    .price{
+      border:1px solid rgba(215,179,106,.28);
+      background: linear-gradient(180deg, rgba(215,179,106,.08), rgba(255,255,255,.02));
+      border-radius: var(--radius2);
+      padding: 20px;
+      box-shadow: 0 18px 60px rgba(215,179,106,.10);
+      position:relative;
+      overflow:hidden;
+    }
+    .price:after{
+      content:"";
+      position:absolute; inset:-1px;
+      background: radial-gradient(560px 220px at 40% 0%, rgba(124,92,255,.08), transparent 60%);
+      pointer-events:none;
+    }
+    .price-inner{position:relative}
+    .big{
+      font-size: 44px;
+      letter-spacing:-1px;
+      margin: 6px 0 0;
+      font-weight:900;
+    }
+    .big span{font-size:14px;color:var(--muted);font-weight:700}
+    .price-hook{
+      font-size:13px;
+      color: rgba(52,211,153,.9);
+      margin: 6px 0 0;
+      font-weight:500;
+    }
+    ul.clean{padding-left: 18px; margin: 12px 0 0; color:var(--muted)}
+    ul.clean li{margin: 8px 0}
+    .fine{font-size:12px;color: rgba(233,236,247,.74); margin-top:12px}
+
+    /* FAQ */
+    .faq .q{
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      border-radius: var(--radius2);
+      padding: 14px;
+      cursor:pointer;
+      transition: .2s ease;
+    }
+    .faq .q:hover{background: rgba(255,255,255,.05)}
+    .faq .q h3{
+      margin:0;
+      font-size:15px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .faq .a{max-height:0; overflow:hidden; color:var(--muted); transition: max-height .25s ease;}
+    .faq .a p{margin:10px 0 0}
+
+    footer{
+      border-top:1px solid rgba(255,255,255,.08);
+      padding: 36px 0;
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 24px;
+    }
+    .footer-row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+    .footer-legal{
+      margin-top:20px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,.06);
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px 20px;
+      align-items:center;
+      font-size:12px;
+    }
+    .footer-legal a{color:var(--muted)}
+    .footer-legal a:hover{color:var(--text)}
+    .small-links{display:flex;gap:12px;flex-wrap:wrap}
+    .small-links a{color:var(--muted)}
+    .small-links a:hover{color:var(--text)}
+
+    /* Modal */
+    .modal-backdrop{
+      position:fixed; inset:0; z-index:100;
+      background: rgba(0,0,0,.85);
+      display:none;
+      align-items:center; justify-content:center;
+      padding: 18px;
+    }
+    .modal{
+      width:min(680px, 100%);
+      border-radius: var(--radius2);
+      border:1px solid rgba(255,255,255,.14);
+      background: linear-gradient(180deg, rgba(14,18,28,.98), rgba(10,14,24,.98));
+      box-shadow: 0 24px 80px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.08) inset;
+      max-height: 90vh;
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+    }
+    .modal header{
+      padding: 14px 16px;
+      border-bottom:1px solid rgba(255,255,255,.12);
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      background: rgba(0,0,0,.2);
+    }
+    .modal header h3{margin:0;font-size:15px}
+    .modal .content{
+      padding: 16px;
+      overflow-y:auto;
+    }
+    .form{display:grid; gap:10px; grid-template-columns: 1fr 1fr;}
+    .form .full{grid-column: 1 / -1}
+    label{font-size:12px; color: var(--muted); display:block; margin-bottom:6px}
+    input, select, textarea{
+      width:100%;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(10,14,24,.9);
+      color: var(--text);
+      outline:none;
+      font-size:14px;
+    }
+    textarea{min-height: 90px; resize: vertical}
+    input:focus, select:focus, textarea:focus{
+      border-color: rgba(215,179,106,.55);
+      box-shadow: 0 0 0 4px rgba(215,179,106,.14);
+    }
+    .modal footer{
+      border-top:1px solid rgba(255,255,255,.12);
+      padding: 12px 16px;
+      display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; align-items:center;
+      background: rgba(0,0,0,.25);
+    }
+    .hint{font-size:12px;color:var(--muted)}
+    .lead-msg{font-size:13px;margin-left:8px}
+    .lead-msg.ok{color:var(--ok)}
+    .lead-msg.err{color:#f87171}
+    /* Botón flotante WhatsApp */
+    .whatsapp-float{
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 90;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: #25D366;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 24px rgba(37,211,102,.45);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .whatsapp-float:hover{
+      transform: scale(1.08);
+      box-shadow: 0 6px 28px rgba(37,211,102,.55);
+    }
+    .whatsapp-float svg{ width: 30px; height: 30px; }
+
+    /* Cookie banner */
+    .cookie-banner{
+      position:fixed;
+      bottom:0;
+      left:0;
+      right:0;
+      z-index:95;
+      background:linear-gradient(180deg,rgba(10,14,24,.98),rgba(7,10,18,.99));
+      border-top:1px solid var(--line);
+      padding:16px 20px 20px;
+      box-shadow:0 -4px 24px rgba(0,0,0,.4);
+      transform:translateY(100%);
+      transition:transform .35s ease;
+    }
+    .cookie-banner.show{ transform:translateY(0); }
+    .cookie-banner-inner{
+      max-width:var(--max);
+      margin:0 auto;
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      gap:16px;
+      justify-content:space-between;
+    }
+    .cookie-banner p{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.5;
+      flex:1 1 280px;
+    }
+    .cookie-banner p a{color:var(--gold)}
+    .cookie-banner-btns{
+      display:flex;
+      gap:10px;
+      flex-shrink:0;
+    }
+
+    .toast{
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      transform: translateX(-50%);
+      background: rgba(6,10,18,.85);
+      border: 1px solid rgba(255,255,255,.14);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      display:none;
+      z-index: 120;
+      font-size: 13px;
+      max-width: min(560px, 92vw);
+    }
+
+    @media (max-width: 940px){
+      .hero{ min-height: auto; padding: 60px 0 50px; }
+      .hero-grid{grid-template-columns: 1fr; gap: 36px;}
+      .pricing{grid-template-columns: 1fr}
+    }
+    @media (max-width: 820px){
+      .container{padding: 0 10px; width: 100%; max-width: 100%; box-sizing: border-box}
+      .panel-selector-content [data-panel="web"] img{ max-width: 100% }
+      .hero-grid, .grid-3, .grid-2, .pricing{ min-width: 0 }
+      .grid-3{grid-template-columns: 1fr}
+      .grid-2{grid-template-columns: 1fr}
+      .brand .brand-text{display:none}
+      .nav-hamburger{display:flex; position:relative; z-index:55}
+      .nav-close-btn{display:flex}
+      .nav-backdrop{display:block}
+      .nav-menu{
+        position:fixed;
+        top:0; right:0;
+        width:min(280px,85vw);
+        height:100vh;
+        flex-direction:column;
+        align-items:stretch;
+        justify-content:flex-start;
+        gap:0;
+        padding:60px 20px 24px;
+        background:linear-gradient(to bottom, rgba(7,10,18,.98), rgba(7,10,18,.96));
+        border-left:1px solid var(--line);
+        box-shadow:-8px 0 32px rgba(0,0,0,.4);
+        transform:translateX(100%);
+        visibility:hidden;
+        pointer-events:none;
+        transition:transform .3s ease, visibility .3s ease;
+        z-index:45;
+      }
+      .nav.nav--open .nav-menu{ transform:translateX(0); visibility:visible; pointer-events:auto; }
+      .nav-close-btn{
+        display:flex;
+        position:absolute;
+        top:14px;
+        right:14px;
+        width:40px;
+        height:40px;
+        align-items:center;
+        justify-content:center;
+        font-size:20px;
+        color:var(--text);
+        background:rgba(255,255,255,.08);
+        border:1px solid var(--line);
+        border-radius:12px;
+        cursor:pointer;
+      }
+      .nav-menu .nav-links{
+        flex-direction:column;
+        align-items:stretch;
+      }
+      .nav-menu .nav-links a{
+        padding:14px 0;
+        font-size:15px;
+        border-bottom:1px solid var(--line);
+      }
+      .nav-menu .nav-cta{
+        margin-top:20px;
+      }
+      .nav-menu .nav-cta .btn{ width:100%; justify-content:center; }
+      .nav-backdrop{
+        position:fixed; inset:0; z-index:39;
+        background:rgba(0,0,0,.5);
+        opacity:0;
+        pointer-events:none;
+        transition:opacity .3s ease;
+      }
+      .nav.nav--open .nav-backdrop{ opacity:1; pointer-events:auto; }
+      .form{grid-template-columns: 1fr}
+    }
+    @media (max-width: 480px){
+      .container{padding: 0 8px; width: 100%}
+      .hero-grid{gap: 24px}
+      .section{padding: 48px 0}
+      .intro-overlay{ padding: 20px; min-height: 100dvh; min-height: -webkit-fill-available; }
+      .intro-overlay .logo-intro{ width: 64px; height: 64px; }
+      .intro-overlay .intro-title{ font-size: 16px; letter-spacing: .1em; }
+    }
+    /* INTRO LOGO */
+    .intro-overlay{
+      position:fixed; inset:0; z-index:9999;
+      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px;
+      background: var(--bg);
+      transition: opacity .4s ease;
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+      box-sizing: border-box;
+    }
+    .intro-overlay.hide{ opacity:0; pointer-events:none; }
+    .intro-overlay .logo-intro{
+      width:80px; height:80px;
+      animation: intro-spin 2s ease-out forwards;
+    }
+    .intro-overlay .logo-intro svg{ width:100%; height:100%; display:block; }
+    .intro-overlay .intro-title{
+      font-weight:700;
+      font-size:18px;
+      letter-spacing:.15em;
+      color:var(--text);
+    }
+    .intro-overlay .intro-bar{
+      width:140px;
+      height:4px;
+      background: rgba(255,255,255,.12);
+      border-radius:999px;
+      overflow:hidden;
+    }
+    .intro-overlay .intro-bar-fill{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+      border-radius:999px;
+      animation: intro-bar 2s ease-out forwards;
+    }
+    @keyframes intro-spin{
+      0%{ transform: rotate(0deg); opacity:1; }
+      100%{ transform: rotate(360deg); opacity:1; }
+    }
+    @keyframes intro-bar{
+      0%{ width: 0%; }
+      100%{ width: 100%; }
+    }
+    @media (prefers-reduced-motion: reduce){
+      .intro-overlay .logo-intro{ animation: none; }
+      .intro-overlay .intro-bar-fill{ animation: none; width: 100%; }
+      .intro-overlay{ transition-duration: .2s; }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      *{transition:none !important; scroll-behavior:auto !important}
+      .btn:hover{transform:none !important}
+      #como-funciona{ opacity:1; transform:none !important; }
+      #como-funciona .feature{ opacity:1; transform:none; animation:none !important; }
+      .panel-selector-bg,
+      .panel-selector-bg::before{ animation: none !important; }
+    }
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "name": "AgendaVIP",
+        "url": "https://agendavip.es",
+        "description": "Servicio de agenda privada por invitación en Telegram para peluquerías, barberías y salones."
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "AgendaVIP",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web, Telegram",
+        "description": "Agenda VIP exclusiva para peluquerías. Invita a tus clientes habituales, reservan desde Telegram en 3 clics. Sin apps ni listas de espera.",
+        "offers": {
+          "@type": "Offer",
+          "price": "19",
+          "priceCurrency": "EUR",
+          "priceValidUntil": "2026-12-31"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "¿El cliente necesita instalar algo?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Solo Telegram. No hay app adicional ni creación de cuentas." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Puedo controlar horarios y servicios?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Sí. Definirás servicios, duración, horarios, antelación y ventana de reservas." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Sirve para equipos?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Sí. Puedes gestionarlo por profesional y por servicio." }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Cómo empiezo?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Solicita acceso y te acompañamos personalmente para configurar tu agenda e invitaciones a tu medida." }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+
+<body>
+  <div class="intro-overlay" id="introOverlay" aria-hidden="true">
+    <div class="logo-intro">
+      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 15L85 35V65L50 85L15 65V35L50 15Z" stroke="url(#goldGradientIntro)" stroke-width="6" stroke-linejoin="round"/>
+        <path d="M35 65L50 30L65 65M42 52H58" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        <defs>
+          <linearGradient id="goldGradientIntro" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#d7b36a" />
+            <stop offset="100%" stop-color="#f3e2b6" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <div class="intro-title">AgendaVIP</div>
+    <div class="intro-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+      <div class="intro-bar-fill" id="introBarFill"></div>
+    </div>
+  </div>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <div class="nav">
+    <div class="container">
+      <div class="nav-inner">
+        <a class="brand" href="#top" aria-label="Ir al inicio">
+          <div class="logo" aria-hidden="true">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M50 15L85 35V65L50 85L15 65V35L50 15Z" stroke="url(#goldGradient)" stroke-width="6" stroke-linejoin="round"/>
+              <path d="M35 65L50 30L65 65M42 52H58" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+              <defs>
+                <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#d7b36a" />
+                  <stop offset="100%" stop-color="#f3e2b6" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <div style="font-size:14px;line-height:1">AgendaVIP</div>
+            <div style="font-size:12px;color:var(--muted);line-height:1.1">Servicio personal · Telegram</div>
+          </div>
+        </a>
+
+        <button class="nav-hamburger" id="navHamburger" type="button" aria-expanded="false" aria-controls="navMobileMenu" aria-label="Abrir menú">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <div class="nav-backdrop" id="navBackdrop" aria-hidden="true"></div>
+          <div class="nav-menu" id="navMobileMenu">
+          <button class="nav-close-btn" id="navCloseBtn" type="button" aria-label="Cerrar menú">✕</button>
+          <div class="nav-links" aria-label="Navegación">
+            <a href="#como-funciona">Cómo funciona</a>
+            <a href="#para-quien">Para quién es</a>
+            <a href="#acceso-privado">Acceso privado</a>
+            <a href="#faq">FAQ</a>
+          </div>
+          <div class="nav-cta">
+            <button class="btn primary" id="btnOpen" type="button">Solicitar acceso privado</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main id="top" role="main">
+    <section class="hero">
+      <video id="heroVideo1" class="hero-bg-video" autoplay muted playsinline aria-hidden="true">
+        <source src="fondo_mov.mp4" type="video/mp4">
+      </video>
+      <video id="heroVideo2" class="hero-bg-video hero-bg-hidden" muted playsinline aria-hidden="true">
+        <source src="Video_Unisex.mp4" type="video/mp4">
+      </video>
+      <div class="container">
+        <div class="hero-grid">
+          <div>
+            <h1>
+              La agenda privada<br/>
+              para quienes valoran el
+              <span style="color:transparent;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;background-clip:text;">trato personal</span>.
+            </h1>
+
+            <p class="subhead">
+              Invitas a tus clientes.<br/>
+              Reservan contigo desde Telegram de forma sencilla y directa.<br/>
+              Sin exposición pública. Sin fricción. Sin ruido.
+            </p>
+
+            <p class="subhead subhead-refuerzo">
+              Pensada para peluquerías y barberías con clientela recurrente y agenda activa. Si trabajas principalmente con habituales, este sistema es para ti.
+            </p>
+
+            <div class="cta-row">
+              <button class="btn primary" id="btnOpen2" type="button">Solicitar acceso privado</button>
+              <a class="btn" href="#como-funciona">Cómo funciona</a>
+            </div>
+
+            <div class="microtrust" aria-label="Ventajas">
+              <span class="pill">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M12 22s8-4 8-10V6l-8-4-8 4v6c0 6 8 10 8 10Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                </svg>
+                Trato personal
+              </span>
+              <span class="pill">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M21 15a4 4 0 0 1-4 4H7l-4 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v8Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                </svg>
+                Solo clientes invitados
+              </span>
+              <span class="pill">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Fideliza clientes
+              </span>
+            </div>
+          </div>
+
+          <div class="hero-video-wrap" aria-label="Video de presentación">
+            <video class="hero-video-main" autoplay muted playsinline loop controls preload="metadata">
+              <!-- Sustituye por tu video: portada-video.mp4 -->
+              <source src="portada-video.mp4" type="video/mp4">
+              <source src="fondo_mov.mp4" type="video/mp4">
+              Tu navegador no soporta la reproducción de video.
+            </video>
+          </div>
+          <p class="subhead subhead-refuerzo" style="text-align:center;margin-top:10px;">
+            Invitas. Reservan. La cita aparece en tu agenda. Sin intermediarios.
+          </p>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-compare" id="comparacion">
+      <div class="container">
+        <h2>Una forma distinta de gestionar tu agenda</h2>
+        <p style="margin:0 0 10px;color:var(--muted);font-size:1rem">Lo que ocurre cuando abres tu agenda a todo el mundo frente a cuando la cuidas como un club privado.</p>
+
+        <div class="compare-layout">
+          <div class="compare-column compare-left">
+            <h3>Sistemas abiertos</h3>
+            <ul class="compare-list">
+              <li class="compare-item compare-item-open" data-step="1">Reservas públicas.</li>
+              <li class="compare-item compare-item-open" data-step="2">Acceso para cualquier cliente.</li>
+              <li class="compare-item compare-item-open" data-step="3">Experiencia impersonal.</li>
+              <li class="compare-item compare-item-open" data-step="4">Comparación constante con otros negocios.</li>
+            </ul>
+          </div>
+          <div class="compare-column compare-column-vip compare-right">
+            <h3>AgendaVIP</h3>
+            <ul class="compare-list">
+              <li class="compare-item compare-item-vip" data-step="1">Acceso solo por invitación.</li>
+              <li class="compare-item compare-item-vip" data-step="2">Relación directa con tus habituales.</li>
+              <li class="compare-item compare-item-vip" data-step="3">Experiencia cuidada y privada.</li>
+              <li class="compare-item compare-item-vip" data-step="4">Control total sobre horarios y reglas.</li>
+            </ul>
+          </div>
+        </div>
+
+        <p class="compare-footer">
+          <br/>
+          Cuando has construido una base fiel de clientes, protegerla es más valioso que ampliarla sin filtro.
+        </p>
+      </div>
+    </section>
+
+    <section class="section" id="como-funciona">
+      <div class="container">
+        <h2>Cómo funciona</h2>
+        <p>Un servicio cercano: tú decides quién entra y cómo funciona tu agenda.</p>
+
+        <div class="grid-3">
+          <div class="feature feature-invita">
+            <div class="icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 11v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 14h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="12" cy="5" r="4" stroke="currentColor" stroke-width="2"/>
+                <path d="M19 8v2M22 9h-2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3>Invitas</h3>
+            <p>Tú eliges a quién invitar y le envías un enlace exclusivo, como un club privado.</p>
+          </div>
+
+          <div class="feature feature-reserva">
+            <div class="icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M8 2v4M16 2v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
+                <path d="M3 10h18" stroke="currentColor" stroke-width="2"/>
+                <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M10 16l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>Reservan</h3>
+            <p>Tus habituales reservan desde Telegram en 3 clics. Nada de descargas, contraseñas ni sistemas complejos.</p>
+          </div>
+
+          <div class="feature feature-controlas">
+            <div class="icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <rect x="3" y="3" width="8" height="8" rx="1" stroke="currentColor" stroke-width="2"/>
+                <rect x="13" y="3" width="8" height="8" rx="1" stroke="currentColor" stroke-width="2"/>
+                <rect x="3" y="13" width="8" height="8" rx="1" stroke="currentColor" stroke-width="2"/>
+                <rect x="13" y="13" width="8" height="8" rx="1" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </div>
+            <h3>Tú controlas</h3>
+            <p>Tu agenda, tus reglas, tus recordatorios. Un panel pensado para ti, no para gestionar masas.</p>
+          </div>
+        </div>
+        <p style="margin-top:28px;color:var(--muted);font-size:1rem;max-width:560px">Al invitarlos les facilitas reservar contigo, no con la competencia —las apps que agrupan muchas peluquerías muestran otras opciones; aquí solo está tu agenda.</p>
+        <p style="margin-top:10px;color:var(--muted);font-size:1rem;max-width:560px">Cuando tu agenda ya funciona, no necesitas más exposición. Necesitas más criterio.</p>
+      </div>
+    </section>
+
+    <section class="section panel-selector-wrap" id="gestiona-citas">
+      <div class="panel-selector-bg" aria-hidden="true"></div>
+      <div class="container">
+        <div class="panel-selector-intro">
+          <h2>Gestiona tus citas</h2>
+          <p style="margin:8px 0 0;color:var(--muted);font-size:1rem">A tu manera, desde donde quieras.</p>
+        </div>
+        <div class="panel-selector-tabs" role="tablist">
+          <button type="button" class="active" data-panel="movil" role="tab" aria-selected="true">desde el móvil</button>
+          <button type="button" data-panel="web" role="tab" aria-selected="false">o desde un PC</button>
+        </div>
+        <div class="panel-selector-content">
+          <div data-panel="movil" class="active" id="panel-movil">
+            <img src="movil.png" alt="Vista móvil de AgendaVIP en Telegram" width="260" height="auto" loading="lazy" />
+          </div>
+          <div data-panel="web" id="panel-web">
+            <img src="panel.png" alt="Panel web de AgendaVIP" width="900" height="auto" loading="lazy" style="max-width:100%;height:auto" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-bg-espera" id="para-quien">
+      <div class="container">
+        <h2>Para quién es</h2>
+        <p>Diseñada para profesionales que ya han construido su clientela. AgendaVIP no está pensada para competir en volumen, sino como una herramienta privada para quienes prefieren un trato personal.</p>
+        <p style="color:var(--muted);font-size:1rem;max-width:620px;margin-top:8px;">No está pensado para negocios que dependen de captar clientes nuevos cada semana. Está pensado para profesionales que ya han construido una relación estable con su clientela.</p>
+
+        <div class="grid-3">
+          <div class="feature">
+            <div class="icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M8 6h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M7 22h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M6 10a6 6 0 1 0 12 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3>Peluquerías y barberías</h3>
+            <p>Quieres dar prioridad a tus habituales y mantener un trato exclusivo, sin listas abiertas.</p>
+          </div>
+
+          <div class="feature">
+            <div class="icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M12 21s-7-4.35-7-11a7 7 0 0 1 14 0c0 6.65-7 11-7 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>Salones premium</h3>
+            <p>Una experiencia VIP para tus habituales: reservan desde Telegram, sin apps ni fricción.</p>
+          </div>
+
+          <div class="feature">
+            <div class="icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>Equipos pequeños</h3>
+            <p>1–5 profesionales que valoran el trato personal y el orden sin perder cercanía.</p>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="grid-2">
+          <div class="panel">
+            <div class="panel-inner">
+              <div class="card">
+                <h3>Encaja si...</h3>
+                <div class="row">
+                  <div><div style="font-weight:700">Tienes habituales</div><small>Has construido una base de clientes recurrentes y fidelizados</small></div>
+                  <span class="tag gold">Sí</span>
+                </div>
+                <div class="row">
+                  <div><div style="font-weight:700">Quieres control</div><small>Reglas, antelación, huecos y servicios con orden sin perder cercanía</small></div>
+                  <span class="tag gold">Sí</span>
+                </div>
+                <div class="row">
+                  <div><div style="font-weight:700">Te importa la experiencia</div><small>Valoras la discreción y la calidad antes que la cantidad</small></div>
+                  <span class="tag ok">Sí</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-inner">
+              <div class="card">
+                <h3>No es para...</h3>
+                <div class="row">
+                  <div><div style="font-weight:700">Marketplaces</div><small>Captar clientes desconocidos por volumen</small></div>
+                  <span class="tag">No</span>
+                </div>
+                <div class="row">
+                  <div><div style="font-weight:700">Reservas abiertas</div><small>Que cualquiera ocupe huecos de tus habituales</small></div>
+                  <span class="tag">No</span>
+                </div>
+                <div class="row">
+                  <div><div style="font-weight:700">Procesos complejos</div><small>Menús infinitos y aprendizaje largo</small></div>
+                  <span class="tag">No</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="section" id="acceso-privado">
+      <div class="container">
+        <h2>Acceso privado en fase inicial</h2>
+        <p>AgendaVIP está abriendo acceso progresivamente, con una prueba gratuita acompañada, a un número reducido de profesionales.</p>
+
+        <div class="grid-2">
+          <div>
+            <p style="color:var(--muted);font-size:1rem;line-height:1.6;margin-top:0;">
+              El objetivo es ofrecer configuración acompañada y un sistema adaptado a cada negocio.
+            </p>
+            <p style="color:var(--muted);font-size:1rem;line-height:1.6;">
+              No buscamos volumen. Buscamos profesionales que trabajen con clientes recurrentes y valoren el trato personal.
+            </p>
+          </div>
+          <div>
+            <h3 style="margin:0 0 10px;font-size:15px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);">
+              Diseñada a partir de una necesidad real
+            </h3>
+            <p style="color:var(--muted);font-size:1rem;line-height:1.6;margin:0 0 10px;">
+              AgendaVIP nace para resolver algo muy concreto: evitar que clientes desconocidos ocupen huecos destinados a habituales y mantener una relación directa sin intermediarios.
+            </p>
+            <p style="color:var(--muted);font-size:1rem;line-height:1.6;margin:0;">
+              No es una plataforma abierta. Es un sistema privado por invitación.
+            </p>
+          </div>
+        </div>
+        <div class="cta-row" style="margin-top:28px;justify-content:center;">
+          <button class="btn primary" id="btnOpen5" type="button">Solicitar acceso de prueba</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="precio">
+      <div class="container">
+        <h2>Acceso</h2>
+        <p>Un servicio personal: cuentas con nosotros para configurar tu agenda y acompañarte.</p>
+        <p style="margin-top:6px;color:var(--muted);font-size:1rem;max-width:620px;">Si valoras el orden, la previsibilidad y el trato directo, entenderás por qué este sistema marca la diferencia.</p>
+
+        <div class="pricing">
+          <div class="price">
+            <div class="price-inner">
+              <div class="tag gold" style="display:inline-flex;gap:8px;align-items:center;margin-bottom:10px">Plan Pro</div>
+              <h3 style="margin:0 0 6px;font-size:16px">Agenda privada + Telegram</h3>
+              <div class="big">29€ <span>/ mes</span></div>
+              <p class="price-hook">Menos de 1€ al día · Prueba gratuita 15 días</p>
+              <ul class="clean">
+                <li>Invitaciones por enlace privado</li>
+                <li>Reservas en Telegram</li>
+                <li>Panel: agenda + clientes + servicios</li>
+                <li>Gestión de clientes con visitas recurrentes</li>
+                <li>Reglas y recordatorios</li>
+              </ul>
+              <p class="fine" style="margin-top:8px">+5€/mes por profesional adicional.</p>
+              <div class="cta-row" style="margin-top:14px">
+                <button class="btn primary" id="btnOpen3" type="button">Prueba gratuita 15 días</button>
+              </div>
+              <p class="fine">Cancela cuando quieras. Sin permanencia.</p>
+            </div>
+          </div>
+
+          <div class="price">
+            <div class="price-inner">
+              <div class="tag gold" style="display:inline-flex;gap:8px;align-items:center;margin-bottom:10px">Plan Pro + Web</div>
+              <h3 style="margin:0 0 6px;font-size:16px">Todo lo anterior + página corporativa</h3>
+              <div class="big">35€ <span>/ mes</span></div>
+              <p class="price-hook">Todo incluido · Prueba gratuita 15 días</p>
+              <ul class="clean">
+                <li>Todo lo del Plan Pro</li>
+                <li>Página web corporativa incluida</li>
+                <li>Diseño adaptado a tu marca</li>
+                <li>Dominio y hosting gestionados</li>
+              </ul>
+              <p class="fine" style="margin-top:8px">+5€/mes por profesional adicional.</p>
+              <div class="cta-row" style="margin-top:14px">
+                <button class="btn primary" id="btnOpen4" type="button">Prueba gratuita 15 días</button>
+              </div>
+              <p class="fine">Te acompañamos para que tu web refleje tu estilo. Cancela cuando quieras.</p>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-inner">
+              <div class="card" style="text-align:center;">
+                <h3 style="margin:0;font-family:var(--serif);font-size:24px;letter-spacing:-0.4px;line-height:1.25;">
+                  mantén tu agenda en manos de<br/>
+                  <span style="color:transparent;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;background-clip:text;">
+                    quien realmente importa
+                  </span>
+                </h3>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="container">
+        <h2>FAQ</h2>
+        <p>Respuestas rápidas.</p>
+
+        <div class="faq grid-2">
+          <div class="q" role="button" tabindex="0" aria-expanded="false">
+            <h3>¿El cliente necesita instalar algo? <span aria-hidden="true">+</span></h3>
+            <div class="a"><p>Solo Telegram. No hay app adicional ni creación de cuentas.</p></div>
+          </div>
+          <div class="q" role="button" tabindex="0" aria-expanded="false">
+            <h3>¿Puedo controlar horarios y servicios? <span aria-hidden="true">+</span></h3>
+            <div class="a"><p>Sí. Definirás servicios, duración, horarios, antelación y ventana de reservas.</p></div>
+          </div>
+          <div class="q" role="button" tabindex="0" aria-expanded="false">
+            <h3>¿Sirve para equipos? <span aria-hidden="true">+</span></h3>
+            <div class="a"><p>Sí. Puedes gestionarlo por profesional y por servicio.</p></div>
+          </div>
+          <div class="q" role="button" tabindex="0" aria-expanded="false">
+            <h3>¿Cómo empiezo? <span aria-hidden="true">+</span></h3>
+            <div class="a"><p>Solicita acceso y te acompañamos personalmente para configurar tu agenda e invitaciones a tu medida.</p></div>
+          </div>
+          <div class="q" role="button" tabindex="0" aria-expanded="false">
+            <h3>¿Hay permanencia o compromiso mínimo? <span aria-hidden="true">+</span></h3>
+            <div class="a"><p>No. Puedes cancelar cuando quieras. Si tras la prueba o el primer mes ves que no encaja, lo paramos sin más.</p></div>
+          </div>
+          <div class="q" role="button" tabindex="0" aria-expanded="false">
+            <h3>¿Puedo seguir atendiendo reservas por WhatsApp o teléfono? <span aria-hidden="true">+</span></h3>
+            <div class="a"><p>Sí. AgendaVIP no sustituye tu forma de atender, la ordena. Puedes seguir usando WhatsApp o llamadas y, si quieres, ir derivando poco a poco a Telegram.</p></div>
+          </div>
+          <div class="q" role="button" tabindex="0" aria-expanded="false">
+            <h3>¿Qué pasa si un cliente no usa Telegram? <span aria-hidden="true">+</span></h3>
+            <div class="a"><p>Puedes seguir reservando para él desde tu panel o tu móvil. Telegram es la vía principal para tus habituales, pero no dejas de atender a quien prefiere otro canal.</p></div>
+          </div>
+          <div class="q" role="button" tabindex="0" aria-expanded="false">
+            <h3>¿Me ayudáis con la puesta en marcha? <span aria-hidden="true">+</span></h3>
+            <div class="a"><p>Sí. Te acompañamos en la configuración inicial de servicios, horarios y mensajes, y te damos ejemplos para comunicarlo a tus clientes habituales.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        <div class="footer-row">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div class="logo logo-sm" aria-hidden="true">
+              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50 15L85 35V65L50 85L15 65V35L50 15Z" stroke="url(#goldGradientFooter)" stroke-width="6" stroke-linejoin="round"/>
+                <path d="M35 65L50 30L65 65M42 52H58" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                <defs>
+                  <linearGradient id="goldGradientFooter" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#d7b36a" />
+                    <stop offset="100%" stop-color="#f3e2b6" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+            <div>
+              <div style="color:var(--text);font-weight:700">AgendaVIP</div>
+              <div style="font-size:12px">© <span id="year"></span></div>
+            </div>
+          </div>
+          <div class="small-links">
+            <a href="#como-funciona">Cómo funciona</a>
+            <a href="#para-quien">Para quién es</a>
+            <a href="#acceso-privado">Acceso privado</a>
+          </div>
+        </div>
+        <div class="footer-legal">
+          <a href="aviso-legal.html">Aviso legal</a>
+          <a href="politica-privacidad.html">Política de privacidad</a>
+          <a href="politica-cookies.html">Política de cookies</a>
+          <span style="color:var(--muted)">·</span>
+          <a href="mailto:contacto@agendavip.es">contacto@agendavip.es</a>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <!-- MODAL -->
+  <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <header>
+        <h3 id="modalTitle">Prueba gratuita 15 días</h3>
+        <button class="btn" id="btnClose" type="button">Cerrar</button>
+      </header>
+
+      <div class="content">
+        <p style="margin:0 0 12px;color:rgba(238,241,251,.88)">
+          Puedes dejarnos tus datos o escribirnos directamente por WhatsApp. Elige cómo prefieres empezar.
+        </p>
+
+        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+          <button type="button" class="btn primary" id="openFormBtn">Rellenar formulario</button>
+          <a href="https://wa.me/34625433667?text=Hola%2C%20quiero%20m%C3%A1s%20informaci%C3%B3n%20sobre%20AgendaVIP" target="_blank" rel="noopener noreferrer" class="btn">Hablar por WhatsApp</a>
+        </div>
+
+        <form id="leadForm" class="form">
+          <div>
+            <label for="name">Nombre</label>
+            <input id="name" name="name" autocomplete="name" placeholder="Carlos" required />
+          </div>
+
+          <div>
+            <label for="shop">Peluquería / Barbería / Salón</label>
+            <input id="shop" name="shop" placeholder="Mi Salón" required />
+          </div>
+
+          <div>
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="tu@email.com" required />
+          </div>
+
+          <div>
+            <label for="city">Ciudad</label>
+            <input id="city" name="city" placeholder="Madrid" required />
+          </div>
+
+          <div>
+            <label for="phone">WhatsApp / Teléfono</label>
+            <input id="phone" name="phone" inputmode="tel" placeholder="+34 600 000 000" required />
+          </div>
+
+          <div class="full">
+            <label for="why">Objetivo principal</label>
+            <select id="why" name="why">
+              <option value="habituales">Reservas para habituales</option>
+              <option value="orden">Ordenar la agenda</option>
+              <option value="noshows">Reducir no-shows</option>
+              <option value="premium">Mejorar experiencia premium</option>
+            </select>
+          </div>
+
+          <div class="full">
+            <label for="note">Mensaje (opcional)</label>
+            <textarea id="note" name="note" placeholder="Tengo X profesionales o servicios, quiero..."></textarea>
+          </div>
+
+          <div class="full" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+            <button class="btn primary" id="leadBtn" type="submit">Enviar solicitud</button>
+            <span id="leadMsg" class="lead-msg"></span>
+          </div>
+        </form>
+      </div>
+
+      <footer>
+        <div class="hint">Te responderemos lo antes posible.</div>
+        <div class="hint"><span style="border:1px solid rgba(255,255,255,.12);padding:3px 7px;border-radius:10px;">Esc</span> para cerrar</div>
+      </footer>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <div class="cookie-banner" id="cookieBanner" role="dialog" aria-label="Aviso de cookies">
+    <div class="cookie-banner-inner">
+      <div>
+        <p>
+          Utilizamos cookies para analizar el tráfico y mejorar tu experiencia. Puedes aceptar o rechazar las cookies analíticas.
+          <a href="politica-cookies.html">Más información</a>
+        </p>
+      </div>
+      <div class="cookie-banner-btns">
+        <button type="button" class="btn" id="cookieReject">Rechazar</button>
+        <button type="button" class="btn primary" id="cookieAccept">Aceptar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Google tag (GA4) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GM4DMVML5E"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-GM4DMVML5E');
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  <a href="https://wa.me/34625433667?text=Hola%2C%20tengo%20una%20consulta%20sobre%20AgendaVIP" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+  </a>
+
+  <script>
+    const $ = (sel, root=document) => root.querySelector(sel);
+    const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+
+    const COOKIE_CONSENT_KEY = "agendavip-cookies";
+    const GA_ID = "G-GM4DMVML5E";
+
+    function loadGA(){
+      if (window._gaLoaded) return;
+      window._gaLoaded = true;
+      const s = document.createElement("script");
+      s.async = true;
+      s.src = "https://www.googletagmanager.com/gtag/js?id=" + GA_ID;
+      document.head.appendChild(s);
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
+      window.gtag = gtag;
+      gtag('js', new Date());
+      gtag('config', GA_ID);
+    }
+
+    // Cookie consent (carga GA solo si aceptan analíticas)
+    (function initCookies(){
+      const banner = document.getElementById("cookieBanner");
+      const btnAccept = document.getElementById("cookieAccept");
+      const btnReject = document.getElementById("cookieReject");
+      const consent = localStorage.getItem(COOKIE_CONSENT_KEY);
+
+      function hide(){
+        if (banner) banner.classList.remove("show");
+      }
+
+      if (consent === "accepted") {
+        loadGA();
+        // Ya eligió, no mostrar banner
+      } else if (consent === "rejected") {
+        // No cargar GA y no mostrar banner
+      } else if (banner) {
+        banner.classList.add("show");
+        if (btnAccept) btnAccept.addEventListener("click", ()=>{
+          localStorage.setItem(COOKIE_CONSENT_KEY, "accepted");
+          loadGA();
+          hide();
+        });
+        if (btnReject) btnReject.addEventListener("click", ()=>{
+          localStorage.setItem(COOKIE_CONSENT_KEY, "rejected");
+          hide();
+        });
+      }
+    })();
+
+    // Intro overlay: logo girando 2s
+    (function initIntro(){
+      const intro = document.getElementById("introOverlay");
+      if (!intro) return;
+      setTimeout(() => intro.classList.add("hide"), 2000);
+      setTimeout(() => intro.remove(), 2500);
+    })();
+
+    // Nav móvil: menú hamburguesa
+    (function initNavMobile(){
+      const nav = document.querySelector(".nav");
+      const hamburger = document.getElementById("navHamburger");
+      const backdrop = document.getElementById("navBackdrop");
+      const menuLinks = document.querySelectorAll(".nav-menu a");
+      function close(){
+        nav.classList.remove("nav--open");
+        if (hamburger) hamburger.setAttribute("aria-expanded", "false");
+      }
+      function toggle(){
+        const open = nav.classList.toggle("nav--open");
+        if (hamburger) hamburger.setAttribute("aria-expanded", open);
+      }
+      if (hamburger) hamburger.addEventListener("click", toggle);
+      const closeBtn = document.getElementById("navCloseBtn");
+      if (closeBtn) closeBtn.addEventListener("click", close);
+      if (backdrop) backdrop.addEventListener("click", close);
+      menuLinks.forEach(a => a.addEventListener("click", close));
+    })();
+
+    // Hero videos: fondo_mov → video_Unisex → repeat
+    (function initHeroVideos(){
+      const v1 = $("#heroVideo1"), v2 = $("#heroVideo2");
+      if (!v1 || !v2) return;
+      v1.addEventListener("ended", ()=>{
+        v1.classList.add("hero-bg-hidden");
+        v2.classList.remove("hero-bg-hidden");
+        v2.currentTime = 0;
+        v2.play();
+      });
+      v2.addEventListener("ended", ()=>{
+        v2.classList.add("hero-bg-hidden");
+        v1.classList.remove("hero-bg-hidden");
+        v1.currentTime = 0;
+        v1.play();
+      });
+    })();
+
+    function toast(msg){
+      const el = $("#toast");
+      el.textContent = msg;
+      el.style.display = "block";
+      clearTimeout(toast._t);
+      toast._t = setTimeout(() => el.style.display = "none", 2400);
+    }
+
+    // Modal
+    const backdrop = $("#modalBackdrop");
+    const openButtons = ["#btnOpen","#btnOpen2","#btnOpen3","#btnOpen4","#btnOpen5"].map(id=>$(id)).filter(Boolean);
+
+    function openModal(){
+      backdrop.style.display = "flex";
+      backdrop.setAttribute("aria-hidden","false");
+      setTimeout(()=> $("#name").focus(), 0);
+    }
+    function closeModal(){
+      backdrop.style.display = "none";
+      backdrop.setAttribute("aria-hidden","true");
+    }
+    openButtons.forEach(btn => btn.addEventListener("click", openModal));
+    $("#btnClose").addEventListener("click", closeModal);
+    backdrop.addEventListener("click", (e)=>{ if(e.target === backdrop) closeModal(); });
+    window.addEventListener("keydown", (e)=>{ if(e.key === "Escape" && backdrop.style.display === "flex") closeModal(); });
+
+    // Botón para hacer foco rápido en el formulario dentro del modal
+    const openFormBtn = document.getElementById("openFormBtn");
+    if (openFormBtn) {
+      openFormBtn.addEventListener("click", () => {
+        const firstInput = document.getElementById("name");
+        if (firstInput) firstInput.focus();
+      });
+    }
+
+    // Animación "Cómo funciona" — entran desde la izquierda al hacer scroll
+    const ioComo = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add("in-view"); });
+    }, { threshold: .25 });
+    const comoSection = $("#como-funciona");
+    if(comoSection) ioComo.observe(comoSection);
+
+    // Comparativa: mostrar pares poco a poco al entrar en vista
+    (function initComparacion(){
+      const section = document.getElementById("comparacion");
+      if (!section) return;
+
+      const maxStep = 4;
+      let currentStep = 0;
+      let intervalId = null;
+
+      function showNext(){
+        currentStep += 1;
+        const left = section.querySelector('.compare-left [data-step="'+currentStep+'"]');
+        const right = section.querySelector('.compare-right [data-step="'+currentStep+'"]');
+        if (left) left.classList.add("is-visible");
+        if (right) right.classList.add("is-visible");
+
+        if (currentStep >= maxStep && intervalId){
+          clearInterval(intervalId);
+        }
+      }
+
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+          if (entry.isIntersecting && !intervalId){
+            // Mostrar la primera pareja al entrar en vista
+            showNext();
+            intervalId = setInterval(showNext, 900);
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: .35 });
+
+      io.observe(section);
+    })();
+
+    // Selector panel móvil / PC
+    $$(".panel-selector-tabs button").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        const panel = btn.dataset.panel;
+        $$(".panel-selector-tabs button").forEach(b=>{
+          b.classList.toggle("active", b.dataset.panel === panel);
+          b.setAttribute("aria-selected", b.dataset.panel === panel ? "true" : "false");
+        });
+        $$(".panel-selector-content [data-panel]").forEach(block=>{
+          block.classList.toggle("active", block.dataset.panel === panel);
+        });
+      });
+    });
+
+    // Lead form -> EmailJS
+    const EMAILJS_PUBLIC_KEY = "topNg38j9LTlBzeSQ";
+    const EMAILJS_SERVICE = "service_p8clbak";
+    const EMAILJS_TEMPLATE = "template_8dl1y4o";
+
+    if (typeof emailjs !== "undefined") emailjs.init(EMAILJS_PUBLIC_KEY);
+
+    document.getElementById("leadForm")?.addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const btn = document.getElementById("leadBtn");
+      const msg = document.getElementById("leadMsg");
+
+      const originalText = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = "Enviando...";
+
+      msg.textContent = "";
+      msg.className = "lead-msg";
+
+      if (typeof emailjs === "undefined") {
+        msg.textContent = "Error: EmailJS no cargó. Comprueba la conexión.";
+        msg.className = "lead-msg err";
+        btn.disabled = false;
+        btn.textContent = originalText;
+        return;
+      }
+
+      const ciudad = document.getElementById("city")?.value?.trim() || "-";
+      const telefono = document.getElementById("phone")?.value?.trim() || "-";
+      const objetivo = document.getElementById("why")?.options[document.getElementById("why").selectedIndex]?.text || "-";
+      const nota = document.getElementById("note")?.value?.trim() || "";
+      const proceso = [
+        "Ciudad: " + ciudad,
+        "WhatsApp/Teléfono: " + telefono,
+        "Objetivo principal: " + objetivo,
+        nota ? "Mensaje: " + nota : ""
+      ].filter(Boolean).join("\n\n");
+
+      const templateParams = {
+        nombre: document.getElementById("name").value.trim(),
+        empresa: document.getElementById("shop").value.trim() || "-",
+        email: document.getElementById("email").value.trim(),
+        proceso: proceso
+      };
+
+      try {
+        await emailjs.send(EMAILJS_SERVICE, EMAILJS_TEMPLATE, templateParams, {
+          publicKey: EMAILJS_PUBLIC_KEY
+        });
+
+        if (typeof gtag === "function") gtag("event", "lead_submit", { method: "emailjs" });
+
+        msg.textContent = "Enviado. Te respondemos en breve.";
+        msg.className = "lead-msg ok";
+        this.reset();
+        setTimeout(closeModal, 1500);
+
+      } catch (err) {
+        console.error("EmailJS error:", err);
+        const errText = err?.text || err?.message || String(err?.status || "");
+        msg.textContent = "No se pudo enviar. " + (errText ? "(" + errText + ") " : "") + "Prueba WhatsApp.";
+        msg.className = "lead-msg err";
+        // Fallback: enlace mailto por si falla (ej. al probar con file://)
+        const fallback = document.createElement("a");
+        fallback.href = "mailto:contacto@agendavip.es?subject=Solicitud%20prueba%20AgendaVIP&body=" +
+          encodeURIComponent("Nombre: " + templateParams.nombre + "\nEmpresa: " + templateParams.empresa + "\nEmail: " + templateParams.email + "\n\n" + proceso);
+        fallback.textContent = " Enviar por email ";
+        fallback.style.marginLeft = "8px";
+        fallback.style.color = "var(--gold)";
+        msg.appendChild(fallback);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = originalText;
+      }
+    });
+
+    // FAQ accordion
+    $$(".faq .q").forEach(item=>{
+      const answer = $(".a", item);
+      const toggle = ()=>{
+        const expanded = item.getAttribute("aria-expanded") === "true";
+        item.setAttribute("aria-expanded", expanded ? "false" : "true");
+        answer.style.maxHeight = expanded ? "0px" : (answer.scrollHeight + 14) + "px";
+        const sign = item.querySelector("h3 span");
+        if(sign) sign.textContent = expanded ? "+" : "–";
+      };
+      item.addEventListener("click", toggle);
+      item.addEventListener("keydown", (e)=>{
+        if(e.key === "Enter" || e.key === " "){ e.preventDefault(); toggle(); }
+      });
+    });
+
+    // Init
+    $("#year").textContent = new Date().getFullYear();
+    if (typeof setDemo === "function") setDemo("panel");
+  </script>
+</body>
+</html>
