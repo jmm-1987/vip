@@ -1076,13 +1076,15 @@
       100%{ width: 100%; }
     }
     @media (prefers-reduced-motion: reduce){
-      .intro-overlay .logo-intro{ animation: none; }
-      .intro-overlay .intro-bar-fill{ animation: none; width: 100%; }
-      .intro-overlay{ transition-duration: .2s; }
+      /* Mantener animacion de entrada aunque el sistema pida reducir motion */
+      .intro-overlay .logo-intro{ animation: intro-spin 2s ease-out forwards; }
+      .intro-overlay .intro-bar-fill{ animation: intro-bar 2s ease-out forwards; width: 100%; }
+      .intro-overlay{ transition-duration: .4s; }
     }
 
     @media (prefers-reduced-motion: reduce){
-      *{transition:none !important; scroll-behavior:auto !important}
+      /* No apagar transiciones de la entrada del overlay */
+      *:not(#introOverlay):not(.intro-overlay):not(.intro-overlay *){transition:none !important; scroll-behavior:auto !important}
       .btn:hover{transform:none !important}
       #como-funciona{ opacity:1; transform:none !important; }
       #como-funciona .feature{ opacity:1; transform:none; animation:none !important; }

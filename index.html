@@ -63,6 +63,61 @@
       filter: contrast(120%);
     }
 
+    /* Intro overlay (como indexantiguo) */
+    .intro-overlay{
+      position:fixed;
+      inset:0;
+      z-index:9999;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:20px;
+      background:var(--bg);
+      transition: opacity .4s ease;
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+      box-sizing:border-box;
+    }
+    .intro-overlay.hide{ opacity:0; pointer-events:none; }
+    .intro-overlay .logo-intro{
+      width:80px;
+      height:80px;
+      animation:intro-spin 2s ease-out forwards;
+    }
+    .intro-overlay .logo-intro svg{
+      width:100%;
+      height:100%;
+      display:block;
+    }
+    .intro-overlay .intro-title{
+      font-weight:700;
+      font-size:18px;
+      letter-spacing:.15em;
+      color:var(--text);
+    }
+    .intro-overlay .intro-bar{
+      width:140px;
+      height:4px;
+      background:rgba(255,255,255,.12);
+      border-radius:999px;
+      overflow:hidden;
+    }
+    .intro-overlay .intro-bar-fill{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, var(--gold), #f3e2b6);
+      border-radius:999px;
+      animation:intro-bar 2s ease-out forwards;
+    }
+    @keyframes intro-spin{
+      0%{ transform: rotate(0deg); opacity:1; }
+      100%{ transform: rotate(360deg); opacity:1; }
+    }
+    @keyframes intro-bar{
+      0%{ width: 0%; }
+      100%{ width: 100%; }
+    }
+
     h1,h2,h3{
       font-family: Georgia, "Times New Roman", serif;
       font-weight:700;
@@ -792,6 +847,24 @@
 <body>
   <div class="bg" aria-hidden="true"></div>
   <div class="grain" aria-hidden="true"></div>
+  <div class="intro-overlay" id="introOverlay" aria-hidden="true">
+    <div class="logo-intro" aria-hidden="true">
+      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 15L85 35V65L50 85L15 65V35L50 15Z" stroke="url(#goldGradientIntro)" stroke-width="6" stroke-linejoin="round"/>
+        <path d="M35 65L50 30L65 65M42 52H58" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        <defs>
+          <linearGradient id="goldGradientIntro" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#d7b36a" />
+            <stop offset="100%" stop-color="#f3e2b6" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <div class="intro-title">AgendaVIP</div>
+    <div class="intro-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <div class="intro-bar-fill" id="introBarFill"></div>
+    </div>
+  </div>
   <nav class="nav">
     <div class="container nav-inner">
       <a href="#inicio" class="brand">
@@ -1216,6 +1289,14 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
+    // Intro overlay: logo girando 2s
+    (function initIntro(){
+      const intro = document.getElementById("introOverlay");
+      if (!intro) return;
+      setTimeout(() => intro.classList.add("hide"), 2000);
+      setTimeout(() => intro.remove(), 2500);
+    })();
+
     const form = document.getElementById('demoForm');
     const success = document.getElementById('successMessage');
     const v1 = document.getElementById('heroVideo1');
